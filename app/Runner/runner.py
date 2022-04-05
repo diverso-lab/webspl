@@ -11,21 +11,21 @@ socials = sys.argv[5]
 plugin_list = []
 
 if (security == '1'):
-    security_plugin_file = open('/home/joszamama/diverso-lab/WebSPL/WebSPL/app/Runner/features/security.txt')
+    security_plugin_file = open('/home/joszamama/diverso-lab/WebSPL/webspl/app/Runner/features/security.txt')
     security_plugins = security_plugin_file.readlines()
     for line in security_plugins:
         plugin_list.append(line)
     security_plugin_file.close()
 
 if (performance == '1'):
-    performance_plugin_file = open('/home/joszamama/diverso-lab/WebSPL/WebSPL/app/Runner/features/performance.txt')
+    performance_plugin_file = open('/home/joszamama/diverso-lab/WebSPL/webspl/app/Runner/features/performance.txt')
     performance_plugins = performance_plugin_file.readlines()
     for line in performance_plugins:
         plugin_list.append(line)
     performance_plugin_file.close()
 
 if (socials == '1'):
-    socials_plugin_file = open('/home/joszamama/diverso-lab/WebSPL/WebSPL/app/Runner/features/socials.txt')
+    socials_plugin_file = open('/home/joszamama/diverso-lab/WebSPL/webspl/app/Runner/features/socials.txt')
     socials_plugins = socials_plugin_file.readlines()
     for line in socials_plugins:
         plugin_list.append(line)
