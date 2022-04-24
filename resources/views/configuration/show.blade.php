@@ -21,26 +21,21 @@
                     <div class="card-body">
                         
                         <div class="form-group">
-                            <strong>Name:</strong>
-                            {{ $configuration->name }}
+                            <strong>Website Name:</strong>
+                            {{ $configuration->web_name }}
                         </div>
                         <div class="form-group">
-                            <strong>Template:</strong>
-                            {{ $configuration->template }}
+                            <strong>Email:</strong>
+                            {{ $configuration->admin_email }}
                         </div>
                         <div class="form-group">
-                            <strong>Security:</strong>
-                            {{ $configuration->security }}
+                            <strong>Theme:</strong>
+                            {{ $configuration->theme }}
                         </div>
                         <div class="form-group">
-                            <strong>Performance:</strong>
-                            {{ $configuration->performance }}
+                            <strong>PHP:</strong>
+                            {{ $configuration->php }}
                         </div>
-                        <div class="form-group">
-                            <strong>Socials:</strong>
-                            {{ $configuration->socials }}
-                        </div>
-
                     </div>
                 </div>
             </div>

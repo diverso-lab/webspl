@@ -8,15 +8,6 @@ use App\Models\User;
 /**
  * Class Configuration
  *
- * @property $id
- * @property $name
- * @property $template_type
- * @property $security
- * @property $performance
- * @property $socials
- * @property $created_at
- * @property $updated_at
- *
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
@@ -24,16 +15,23 @@ class Configuration extends Model
 {
 
     static $rules = [
-      'name' => 'required',
+      'web_name' => 'required',
       'admin_email' => 'required',
-      'template' => 'required',
       'theme' => 'required',
-      'content' => 'required',
+      'php' => 'required',
+      'storage' => 'required',
+      'catalog' => 'required',
+      'search' => 'required',
+      'paypal_payment' => 'required',
+      'creditcard_payment' => 'required',
+      'mobile_payment' => 'required',
+      'cart' => 'required',
       'security' => 'required',
-      'performance' => 'required',
-      'socials' => 'required',
-      'email_server' => 'required',
       'backup' => 'required',
+      'seo' => 'required',
+      'twitter_socials' => 'required',
+      'facebook_socials' => 'required',
+      'youtube_socials' => 'required',
     ];
 
     protected $perPage = 10;
@@ -43,7 +41,7 @@ class Configuration extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'name', 'admin_email', 'template', 'theme', 'content', 'security','performance','socials', 'email_server', 'backup'];
+    protected $fillable = ['user_id', 'web_name', 'admin_email', 'theme', 'php', 'storage', 'catalog', 'search', 'paypal_payment', 'creditcard_payment', 'mobile_payment', 'cart', 'security', 'backup', 'seo', 'twitter_socials', 'facebook_socials', 'youtube_socials'];
 
     public function user() {
       return $this->belongsTo(User::class);

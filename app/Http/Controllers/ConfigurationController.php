@@ -69,34 +69,53 @@ class ConfigurationController extends Controller
     {
         request()->validate(Configuration::$rules);
 
+        // $process = new Process(['python3', app_path('Runner/flama.py')]);
+        // $process->setTimeout(240);
+        // $process->setIdleTimeout(240);
+        // $process->run();
+
         $configuration = Configuration::create([
-            'name' => request('name'),
+            'web_name' => request('web_name'),
             'admin_email' => request('admin_email'),
-            'template' => request('template'),
             'theme' => request('theme'),
-            'content' => request('content'),
+            'php' => request('php'),
+            'storage' => request('storage'),
+            'catalog' => request('catalog'),
+            'search' => request('search'),
+            'paypal_payment' => request('paypal_payment'),
+            'creditcard_payment' => request('creditcard_payment'),
+            'mobile_payment' => request('mobile_payment'),
+            'cart' => request('cart'),
             'security' => request('security'),
-            'performance' => request('performance'),
-            'socials' => request('socials'),
-            'email_server' => request('email_server'),
             'backup' => request('backup'),
+            'seo' => request('seo'),
+            'twitter_socials' => request('twitter_socials'),
+            'facebook_socials' => request('facebook_socials'),
+            'youtube_socials' => request('youtube_socials'),
             'user_id' => Auth::user()->id
         ]);
 
-        $name = $configuration['name'];
+        $web_name = $configuration['web_name'];
         $admin_email = $configuration['admin_email'];
-        $template = $configuration['template'];
         $theme = $configuration['theme'];
-        $content = $configuration['content'];
+        $php = $configuration['php'];
+        $storage = $configuration['storage'];
+        $catalog = $configuration['catalog'];
+        $search = $configuration['search'];
+        $paypal_payment = $configuration['paypal_payment'];
+        $creditcard_payment = $configuration['creditcard_payment'];
+        $mobile_payment = $configuration['mobile_payment'];
+        $cart = $configuration['cart'];
         $security = $configuration['security'];
-        $performance = $configuration['performance'];
-        $socials = $configuration['socials'];
-        $email_server = $configuration['email_server'];
         $backup = $configuration['backup'];
+        $seo = $configuration['seo'];
+        $twitter_socials = $configuration['twitter_socials'];
+        $facebook_socials = $configuration['facebook_socials'];
+        $youtube_socials = $configuration['youtube_socials'];
 
-        $process = new Process(['python3', app_path('Runner/runner.py'), $name, $admin_email, $template, $theme ,$content, $security, $performance, $socials, $email_server, $backup]);
-        $process->setTimeout(120);
-        $process->setIdleTimeout(120);
+        $process = new Process(['python3', app_path('Runner/runner.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment,$mobile_payment, $cart, $security,$backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials]);
+        $process->setTimeout(240);
+        $process->setIdleTimeout(240);
         $process->run();
 
         if (!$process->isSuccessful()) {

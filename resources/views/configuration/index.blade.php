@@ -34,19 +34,10 @@
                             <table class="table table-striped table-hover">
                                 <thead class="thead">
                                     <tr>
-                                        <th>No</th>
-
 										<th>Name</th>
-                                        <th>Admin Email</th>
-										<th>Template</th>
-                                        <th>Theme</th>
-                                        <th>Content</th>
-										<th>Security</th>
-										<th>Performance</th>
-										<th>Socials</th>
-                                        <th>Email Server</th>
-                                        <th>Backup</th>
-
+                                        <th>Email</th>
+										<th>Theme</th>
+                                        <th>PHP</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -56,14 +47,8 @@
 
 											<td>{{ $configuration->name }}</td>
                                             <td>{{ $configuration->admin_email}}</td>
-											<td>{{ $configuration->template}}</td>
-                                            <td>{{ $configuration->theme}}</td>
-                                            <td>{{ $configuration->content}}</td>
-											<td>{{ $configuration->security }}</td>
-											<td>{{ $configuration->performance }}</td>
-											<td>{{ $configuration->socials }}</td>
-                                            <td>{{ $configuration->email_server}}</td>
-                                            <td>{{ $configuration->backup}}</td>
+											<td>{{ $configuration->theme}}</td>
+                                            <td>{{ $configuration->php}}</td>
 
                                             <td>
                                                 <form action="{{ route('configurations.destroy',$configuration->id) }}" method="POST">
