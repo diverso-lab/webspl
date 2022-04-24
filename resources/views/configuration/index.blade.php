@@ -37,10 +37,15 @@
                                         <th>No</th>
 
 										<th>Name</th>
-										<th>Template Type</th>
+                                        <th>Admin Email</th>
+										<th>Template</th>
+                                        <th>Theme</th>
+                                        <th>Content</th>
 										<th>Security</th>
 										<th>Performance</th>
 										<th>Socials</th>
+                                        <th>Email Server</th>
+                                        <th>Backup</th>
 
                                         <th></th>
                                     </tr>
@@ -50,15 +55,20 @@
                                         <tr>
 
 											<td>{{ $configuration->name }}</td>
-											<td>{{ $configuration->template_type }}</td>
+                                            <td>{{ $configuration->admin_email}}</td>
+											<td>{{ $configuration->template}}</td>
+                                            <td>{{ $configuration->theme}}</td>
+                                            <td>{{ $configuration->content}}</td>
 											<td>{{ $configuration->security }}</td>
 											<td>{{ $configuration->performance }}</td>
 											<td>{{ $configuration->socials }}</td>
+                                            <td>{{ $configuration->email_server}}</td>
+                                            <td>{{ $configuration->backup}}</td>
 
                                             <td>
                                                 <form action="{{ route('configurations.destroy',$configuration->id) }}" method="POST">
                                                     <a class="btn btn-sm btn-primary " href="{{ route('configurations.show',$configuration->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('configurations.edit',$configuration->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
+                                                    <a class="btn btn-sm btn-success" href="storage/{{ $configuration->name }}.zip"><i class="fa fa-fw fa-edit"></i> Download</a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>

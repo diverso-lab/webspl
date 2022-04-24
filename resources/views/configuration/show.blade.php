@@ -25,8 +25,8 @@
                             {{ $configuration->name }}
                         </div>
                         <div class="form-group">
-                            <strong>Template Type:</strong>
-                            {{ $configuration->template_type }}
+                            <strong>Template:</strong>
+                            {{ $configuration->template }}
                         </div>
                         <div class="form-group">
                             <strong>Security:</strong>

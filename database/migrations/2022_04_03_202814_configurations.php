@@ -18,10 +18,15 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('name');
-            $table->string('template_type');
+            $table->string('admin_email');
+            $table->string('template');
+            $table->string('theme');
+            $table->boolean('content');
             $table->boolean('security');
             $table->boolean('performance');
             $table->boolean('socials');
+            $table->boolean('email_server');
+            $table->boolean('backup');
             $table->timestamps();
         });
     }

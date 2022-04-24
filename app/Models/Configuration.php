@@ -25,20 +25,25 @@ class Configuration extends Model
 
     static $rules = [
       'name' => 'required',
-      'template_type' => 'required',
+      'admin_email' => 'required',
+      'template' => 'required',
+      'theme' => 'required',
+      'content' => 'required',
       'security' => 'required',
       'performance' => 'required',
       'socials' => 'required',
+      'email_server' => 'required',
+      'backup' => 'required',
     ];
 
-    protected $perPage = 20;
+    protected $perPage = 10;
 
     /**
      * Attributes that should be mass-assignable.
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'name','template_type','security','performance','socials'];
+    protected $fillable = ['user_id', 'name', 'admin_email', 'template', 'theme', 'content', 'security','performance','socials', 'email_server', 'backup'];
 
     public function user() {
       return $this->belongsTo(User::class);

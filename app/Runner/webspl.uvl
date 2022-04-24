@@ -1,0 +1,46 @@
+features
+    WebSPL { abstract }
+        mandatory
+            Server { abstract }
+                mandatory
+                    PHP
+                        or
+                            v74
+                            v81
+                    Storage
+                        or
+                            Low
+                            Enought
+        optional
+            Web { abstract }
+                mandatory
+                    Catalog
+                    Shopping
+                        mandatory
+                            Cart
+                            Payment
+                                alternative
+                                    PayPal
+                                    CreditCard
+                                    Mobile
+                    Contact
+                    Security
+                        or
+                            High
+                            Standard
+                optional
+                    Search
+                        or
+                            Basic
+                            Advanced
+                    Backup
+                    Marketing
+                        SEO
+                        Socials
+                            or
+                                Twitter
+                                Facebook
+                                YouTube
+constraints
+    CreditCard => High
+    Low => !Backup
