@@ -38,7 +38,6 @@
                                         <th>Email</th>
 										<th>Theme</th>
                                         <th>PHP</th>
-                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>

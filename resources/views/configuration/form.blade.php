@@ -1,6 +1,6 @@
 <div class="box box-info padding-1">
     <div class="box-body">
-
+        <h4>Website</h4>
         <div class="form-group">
             {{ Form::label('web_name') }}
             {{ Form::text('web_name', $configuration->web_name, ['class' => 'form-control' . ($errors->has('web_name') ? ' is-invalid' : ''), 'placeholder' => 'Web Name']) }}
@@ -13,79 +13,85 @@
         </div>
         <div class="form-group">
             {{ Form::label('theme') }}
-            {{ Form::text('theme', $configuration->theme, ['class' => 'form-control' . ($errors->has('theme') ? ' is-invalid' : ''), 'placeholder' => 'Theme']) }}
+            {!! Form::select('theme', ['go' => 'Go','calibri-wp' => 'Calibri'], 'go') !!}
             {!! $errors->first('theme', '<div class="invalid-feedback">:message</div>') !!}
         </div>
+        <br>
+        <br>
+        <h4>Server</h4>
         <div class="form-group">
-            {{ Form::label('php') }}
-            {{ Form::text('php', $configuration->theme, ['class' => 'form-control' . ($errors->has('php') ? ' is-invalid' : ''), 'placeholder' => 'PHP Version']) }}
+            {{ Form::label('PHP') }}
+            {!! Form::select('php', ['7.4' => '7.4','8.1' => '8.1'], '7.4') !!}
             {!! $errors->first('php', '<div class="invalid-feedback">:message</div>') !!}
         </div>
             <div class="form-group">
             {{ Form::label('storage') }}
-            {{ Form::text('storage', $configuration->theme, ['class' => 'form-control' . ($errors->has('storage') ? ' is-invalid' : ''), 'placeholder' => 'Storage']) }}
+            {!! Form::select('storage', ['enought' => 'Enough','low' => 'Low'], 'enought') !!}
             {!! $errors->first('storage', '<div class="invalid-feedback">:message</div>') !!}
+        </div>
+        <br>
+        <br>
+        <h4>Features</h4>
+        </div>
+        <div class="form-group">
+            {{ Form::label('search') }}
+            {!! Form::select('search', ['basic' => 'Basic','advanced' => 'Advanced'], 'basic') !!}
+            {!! $errors->first('search', '<div class="invalid-feedback">:message</div>') !!}
+        </div>
+        <div class="form-group">
+            {{ Form::label('security') }}
+            {!! Form::select('security', ['high' => 'High','standard' => 'Standard'], 'standard') !!}
+            {!! $errors->first('security', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         <div class="form-group">
             {{ Form::label('catalog') }}
-            {{ Form::text('catalog', $configuration->theme, ['class' => 'form-control' . ($errors->has('catalog') ? ' is-invalid' : ''), 'placeholder' => 'Catalog']) }}
+            {!! Form::select('catalog', ['0' => 'No','1' => 'Yes'], '0') !!}
             {!! $errors->first('catalog', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         </div>
             <div class="form-group">
-            {{ Form::label('search') }}
-            {{ Form::text('search', $configuration->theme, ['class' => 'form-control' . ($errors->has('search') ? ' is-invalid' : ''), 'placeholder' => 'Search {advanced, basic}']) }}
-            {!! $errors->first('search', '<div class="invalid-feedback">:message</div>') !!}
-        </div>
-        </div>
-            <div class="form-group">
             {{ Form::label('paypal_payment') }}
-            {{ Form::text('paypal_payment', $configuration->theme, ['class' => 'form-control' . ($errors->has('paypal_payment') ? ' is-invalid' : ''), 'placeholder' => 'PayPal Payments']) }}
+            {!! Form::select('paypal_payment', ['0' => 'No','1' => 'Yes'], '0') !!}
             {!! $errors->first('paypal_payment', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         <div class="form-group">
             {{ Form::label('creditcard_payment') }}
-            {{ Form::text('creditcard_payment', $configuration->theme, ['class' => 'form-control' . ($errors->has('creditcard_payment') ? ' is-invalid' : ''), 'placeholder' => 'Credit Card Payments']) }}
+            {!! Form::select('creditcard_payment', ['0' => 'No','1' => 'Yes'], '0') !!}
             {!! $errors->first('creditcard_payment', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         <div class="form-group">
             {{ Form::label('mobile_payment') }}
-            {{ Form::text('mobile_payment', $configuration->theme, ['class' => 'form-control' . ($errors->has('mobile_payment') ? ' is-invalid' : ''), 'placeholder' => 'Mobile Payment']) }}
+            {!! Form::select('mobile_payment', ['0' => 'No','1' => 'Yes'], '0') !!}
             {!! $errors->first('mobile_payment', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         <div class="form-group">
             {{ Form::label('cart') }}
-            {{ Form::text('cart', $configuration->theme, ['class' => 'form-control' . ($errors->has('cart') ? ' is-invalid' : ''), 'placeholder' => 'Cart']) }}
+            {!! Form::select('cart', ['0' => 'No','1' => 'Yes'], '0') !!}
             {!! $errors->first('cart', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         <div class="form-group">
-            {{ Form::label('security') }}
-            {{ Form::text('security', $configuration->theme, ['class' => 'form-control' . ($errors->has('security') ? ' is-invalid' : ''), 'placeholder' => 'Security {high, standard}']) }}
-            {!! $errors->first('security', '<div class="invalid-feedback">:message</div>') !!}
-        </div>
-        <div class="form-group">
             {{ Form::label('backup') }}
-            {{ Form::text('backup', $configuration->theme, ['class' => 'form-control' . ($errors->has('backup') ? ' is-invalid' : ''), 'placeholder' => 'Backups']) }}
+            {!! Form::select('backup', ['0' => 'No','1' => 'Yes'], '0') !!}
             {!! $errors->first('backup', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         <div class="form-group">
             {{ Form::label('seo') }}
-            {{ Form::text('seo', $configuration->theme, ['class' => 'form-control' . ($errors->has('seo') ? ' is-invalid' : ''), 'placeholder' => 'SEO']) }}
+            {!! Form::select('seo', ['0' => 'No','1' => 'Yes'], '0') !!}
             {!! $errors->first('seo', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         <div class="form-group">
             {{ Form::label('twitter_socials') }}
-            {{ Form::text('twitter_socials', $configuration->theme, ['class' => 'form-control' . ($errors->has('twitter_socials') ? ' is-invalid' : ''), 'placeholder' => 'Twitter']) }}
+            {!! Form::select('twitter_socials', ['0' => 'No','1' => 'Yes'], '0') !!}
             {!! $errors->first('twitter_socials', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         <div class="form-group">
             {{ Form::label('facebook_socials') }}
-            {{ Form::text('facebook_socials', $configuration->theme, ['class' => 'form-control' . ($errors->has('facebook_socials') ? ' is-invalid' : ''), 'placeholder' => 'Facebook']) }}
+            {!! Form::select('facebook_socials', ['0' => 'No','1' => 'Yes'], '0') !!}
             {!! $errors->first('facebook_socials', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         <div class="form-group">
             {{ Form::label('youtube_socials') }}
-            {{ Form::text('youtube_socials', $configuration->theme, ['class' => 'form-control' . ($errors->has('youtube_socials') ? ' is-invalid' : ''), 'placeholder' => 'YouTube']) }}
+            {!! Form::select('youtube_socials', ['0' => 'No','1' => 'Yes'], '0') !!}
             {!! $errors->first('youtube_socials', '<div class="invalid-feedback">:message</div>') !!}
         </div>
     </div>
