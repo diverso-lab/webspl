@@ -74,7 +74,7 @@ class ConfigurationController extends Controller
         $flama = new Process(['python3.9', app_path('Runner/flama.py'), $web_name]);
         $flama->run();
 
-        $line = fgets(fopen("/home/joszamama/diverso-lab/WebSPL/webspl/app/Runner/outputs/".$web_name.".txt", 'r'));
+        $line = fgets(fopen("/home/joszamama/diverso-lab/webspl/app/Runner/outputs/".$web_name.".txt", 'r'));
 
         if ($line == '1') {
 
