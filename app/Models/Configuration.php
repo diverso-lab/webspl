@@ -20,12 +20,10 @@ class Configuration extends Model
       'theme' => 'required',
       'php' => 'required',
       'storage' => 'required',
-      'catalog' => 'required',
       'search' => 'required',
       'paypal_payment' => 'required',
       'creditcard_payment' => 'required',
       'mobile_payment' => 'required',
-      'cart' => 'required',
       'security' => 'required',
       'backup' => 'required',
       'seo' => 'required',
@@ -41,7 +39,7 @@ class Configuration extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'web_name', 'admin_email', 'theme', 'php', 'storage', 'catalog', 'search', 'paypal_payment', 'creditcard_payment', 'mobile_payment', 'cart', 'security', 'backup', 'seo', 'twitter_socials', 'facebook_socials', 'youtube_socials'];
+    protected $fillable = ['user_id', 'web_name', 'admin_email', 'theme', 'php', 'storage', 'search', 'paypal_payment', 'creditcard_payment', 'mobile_payment', 'security', 'backup', 'seo', 'twitter_socials', 'facebook_socials', 'youtube_socials'];
 
     public function user() {
       return $this->belongsTo(User::class);

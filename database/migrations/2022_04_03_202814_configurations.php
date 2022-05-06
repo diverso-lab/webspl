@@ -17,6 +17,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->enum('status', ['LOADING', 'DONE'])->default('LOADING');
             
             # Settings
             $table->string('web_name');
@@ -25,16 +26,16 @@ return new class extends Migration
             
             # Server
             $table->string('php');
-            $table->string('storage');
+            $table->enum('storage', ['LOW', 'ENOUGH']);
 
             # Web
-            $table->boolean('catalog');
-            $table->string('search');
+            $table->boolean('catalog')->default('1');
+            $table->boolean('cart')->default('1');
+            $table->enum('search', ['BASIC', 'ADVANCED']);
             $table->boolean('paypal_payment');
             $table->boolean('creditcard_payment');
             $table->boolean('mobile_payment');
-            $table->boolean('cart');
-            $table->string('security');
+            $table->enum('security', ['HIGH', 'STANDARD']);
             $table->boolean('backup');
             $table->boolean('seo');
             $table->boolean('twitter_socials');

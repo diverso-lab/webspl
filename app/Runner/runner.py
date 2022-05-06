@@ -23,22 +23,18 @@ youtube_socials = sys.argv[17]
 
 plugin_list = []
 plugin_list.append("woocommerce")
+plugin_list.append("woo-cart-all-in-one")
+plugin_list.append("ecommerce-product-catalog")
 
-if (catalog == '1'):
-    catalog_plugin_file = open('/home/joszamama/diverso-lab/webspl/app/Runner/features/catalog.txt')
-    catalog_plugins = catalog_plugin_file.readlines()
-    for line in catalog_plugins:
-        plugin_list.append(line)
-    catalog_plugin_file.close()
 
-if (search == 'basic'):
+if (search == 'BASIC'):
     basic_search_plugin_file = open('/home/joszamama/diverso-lab/webspl/app/Runner/features/basic_search.txt')
     basic_search_plugins = basic_search_plugin_file.readlines()
     for line in basic_search_plugins:
         plugin_list.append(line)
     basic_search_plugin_file.close()
 
-if (search == 'advanced'):
+if (search == 'ADVANCED'):
     advanced_search_plugin_file = open('/home/joszamama/diverso-lab/webspl/app/Runner/features/advanced_search.txt')
     advanced_search_plugins = advanced_search_plugin_file.readlines()
     for line in advanced_search_plugins:
@@ -66,21 +62,14 @@ if (mobile_payment == '1'):
         plugin_list.append(line)
     mobile_payment_plugin_file.close()
 
-if (cart == '1'):
-    cart_plugin_file = open('/home/joszamama/diverso-lab/webspl/app/Runner/features/cart.txt')
-    cart_plugins = cart_plugin_file.readlines()
-    for line in cart_plugins:
-        plugin_list.append(line)
-    cart_plugin_file.close()
-
-if (security == '1'):
+if (security == 'HIGH'):
     high_security_plugin_file = open('/home/joszamama/diverso-lab/webspl/app/Runner/features/high_security.txt')
     high_security_plugins = high_security_plugin_file.readlines()
     for line in high_security_plugins:
         plugin_list.append(line)
     high_security_plugin_file.close()
 
-if (security == '1'):
+if (security == 'STANDARD'):
     standard_security_plugin_file = open('/home/joszamama/diverso-lab/webspl/app/Runner/features/standard_security.txt')
     standard_security_plugins = standard_security_plugin_file.readlines()
     for line in standard_security_plugins:

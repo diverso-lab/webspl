@@ -26,7 +26,7 @@
         </div>
             <div class="form-group">
             {{ Form::label('storage') }}
-            {!! Form::select('storage', ['enought' => 'Enough','low' => 'Low'], 'enought') !!}
+            {!! Form::select('storage', ['ENOUGH' => 'Enough','LOW' => 'Low'], 'LOW') !!}
             {!! $errors->first('storage', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         <br>
@@ -35,18 +35,13 @@
         </div>
         <div class="form-group">
             {{ Form::label('search') }}
-            {!! Form::select('search', ['basic' => 'Basic','advanced' => 'Advanced'], 'basic') !!}
+            {!! Form::select('search', ['BASIC' => 'Basic','ADVANCED' => 'Advanced'], 'BASIC') !!}
             {!! $errors->first('search', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         <div class="form-group">
             {{ Form::label('security') }}
-            {!! Form::select('security', ['high' => 'High','standard' => 'Standard'], 'standard') !!}
+            {!! Form::select('security', ['HIGH' => 'High','STANDARD' => 'Standard'], 'STANDARD') !!}
             {!! $errors->first('security', '<div class="invalid-feedback">:message</div>') !!}
-        </div>
-        <div class="form-group">
-            {{ Form::label('catalog') }}
-            {!! Form::select('catalog', ['0' => 'No','1' => 'Yes'], '0') !!}
-            {!! $errors->first('catalog', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         </div>
             <div class="form-group">
@@ -63,11 +58,6 @@
             {{ Form::label('mobile_payment') }}
             {!! Form::select('mobile_payment', ['0' => 'No','1' => 'Yes'], '0') !!}
             {!! $errors->first('mobile_payment', '<div class="invalid-feedback">:message</div>') !!}
-        </div>
-        <div class="form-group">
-            {{ Form::label('cart') }}
-            {!! Form::select('cart', ['0' => 'No','1' => 'Yes'], '0') !!}
-            {!! $errors->first('cart', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         <div class="form-group">
             {{ Form::label('backup') }}
