@@ -113,9 +113,9 @@ if (youtube_socials == '1'):
     youtube_socials_plugin_file.close()
 
 os.system("cd " + ENV + " && mkdir generated-websites")
-os.system("cd " +  ENV + "/generated-websites && mkdir " + web_name + " && cd " + web_name + " && git clone https://github.com/joszamama/wordpress-docker-compose.git")
+os.system("cd " +  ENV + "/generated-websites && mkdir " + web_name + " && cd " + web_name + " && git clone https://github.com/joszamama/auto-wp.git")
 
-reading_file = open(ENV + "/generated-websites/" + web_name + "/wordpress-docker-compose/.env", "r")
+reading_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "r")
 new_file_content = ""
 for line in reading_file:
   stripped_line = line.strip()
@@ -124,26 +124,26 @@ for line in reading_file:
   #new_line = stripped_line.replace('WORDPRESS_ADMIN_EMAIL="your-email@example.com"', 'WORDPRESS_ADMIN_EMAIL="' + admin_email + '"')
   #new_file_content += new_line +"\n"
 reading_file.close()
-writing_file = open(ENV + "/generated-websites/" + web_name + "/wordpress-docker-compose/.env", "w")
+writing_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "w")
 writing_file.write(new_file_content)
 writing_file.close()
 
-reading_file = open(ENV + "/generated-websites/" + web_name + "/wordpress-docker-compose/.env", "r")
+reading_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "r")
 new_file_content = ""
 for line in reading_file:
   stripped_line = line.strip()
   new_line = stripped_line.replace('WORDPRESS_ADMIN_EMAIL="your-email@example.com"', 'WORDPRESS_ADMIN_EMAIL="' + admin_email + '"')
   new_file_content += new_line +"\n"
 reading_file.close()
-writing_file = open(ENV + "/generated-websites/" + web_name + "/wordpress-docker-compose/.env", "w")
+writing_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "w")
 writing_file.write(new_file_content)
 writing_file.close()
 
-os.system("cd " + ENV + "/generated-websites/" + web_name + "/wordpress-docker-compose && sudo make autoinstall")
-os.system("cd " + ENV + "/generated-websites/" + web_name + "/wordpress-docker-compose && sudo docker-compose run --rm wpcli theme install " + theme + " --activate")
+os.system("cd " + ENV + "/generated-websites/" + web_name + "/auto-wp && sudo make autoinstall")
+os.system("cd " + ENV + "/generated-websites/" + web_name + "/auto-wp && sudo docker-compose run --rm wpcli theme install " + theme + " --activate")
 
 for plugin in plugin_list:
-    os.system("cd " + ENV + "/generated-websites/" + web_name + "/wordpress-docker-compose && sudo docker-compose run --rm wpcli plugin install " + plugin + " --activate")
+    os.system("cd " + ENV + "/generated-websites/" + web_name + "/auto-wp && sudo docker-compose run --rm wpcli plugin install " + plugin + " --activate")
 # os.system("cd /home/joszamama/diverso-lab/generated-websites/ && zip -r " + web_name + ".zip " + web_name)
 # os.system("cd /home/joszamama/diverso-lab/generated-websites/ && mv " + web_name + ".zip /home/joszamama/diverso-lab/webspl/storage/app/public/")
 # os.system("cd /home/joszamama/diverso-lab/generated-websites/ && rm -r " + web_name + ".zip ")
