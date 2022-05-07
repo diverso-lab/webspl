@@ -1,9 +1,6 @@
 <div id="top"></div>
 <br />
 <div align="center">
-  <a href="https://github.com/diverso-lab/webspl">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
 
   <h3 align="center">WebSPL</h3>
 
