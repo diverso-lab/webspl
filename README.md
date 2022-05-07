@@ -67,7 +67,7 @@ To get a local copy up and running follow these simple example steps.
   ```
 4. Update the .env file providing the HOME_PATH and the DB connection
 
-5. Migrate the DB
+5. Migrate the DB:
   ```sh
   php artisan migrate:fresh
   ```
