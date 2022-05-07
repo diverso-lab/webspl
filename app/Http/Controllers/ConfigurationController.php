@@ -10,6 +10,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Illuminate\Support\Facades\Storage;
 
+
 /**
  * Class ConfigurationController
  * @package App\Http\Controllers
@@ -21,7 +22,6 @@ class ConfigurationController extends Controller
     {
         $this->middleware('checkconfiguration', ['except' => ['index', 'create', 'store']]);
     }
-
 
     /**
      * Display a listing of the resource.
@@ -70,13 +70,34 @@ class ConfigurationController extends Controller
         request()->validate(Configuration::$rules);
 
         $web_name = request('web_name');
-        
-        $flama = new Process(['python3.9', app_path('Runner/flama.py'), $web_name]);
-        $flama->run();
+        $admin_email = request('admin_email');
+        $theme = request('theme');
+        $php = request('php');
+        $storage = request('storage');
+        $catalog = '1';
+        $cart = '1';
+        $search = request('search');
+        $seo = request('seo');
+        $paypal_payment = request('paypal_payment');
+        $creditcard_payment = request('creditcard_payment');
+        $mobile_payment = request('mobile_payment');
+        $security = request('security');
+        $backup = request('backup');
+        $twitter_socials = request('twitter_socials');
+        $facebook_socials = request('facebook_socials');
+        $youtube_socials = request('youtube_socials');
 
-        $line = fgets(fopen("/home/joszamama/diverso-lab/webspl/app/Runner/outputs/".$web_name.".txt", 'r'));
+        $flama = new Process(['python3.9', app_path('Runner/flama.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment,$mobile_payment, $cart, $security, $backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials]);
+        $flama->run();
+        $HOME_PATH = $_ENV["HOME_PATH"];
+        $line = fgets(fopen( "".$HOME_PATH."/webspl/app/Runner/result/".$web_name.".txt", 'r'));
 
         if ($line == '1') {
+
+            $process = new Process(['python3', app_path('Runner/runner.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment,$mobile_payment, $cart, $security, $backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials]);
+            $process->setTimeout(450);
+            $process->setIdleTimeout(450);
+            $process->run();
 
             $configuration = Configuration::create([
                 'web_name' => request('web_name'),
@@ -99,28 +120,6 @@ class ConfigurationController extends Controller
                 'user_id' => Auth::user()->id
             ]);
 
-            $web_name = $configuration['web_name'];
-            $admin_email = $configuration['admin_email'];
-            $theme = $configuration['theme'];
-            $php = $configuration['php'];
-            $storage = $configuration['storage'];
-            $catalog = $configuration['catalog'];
-            $search = $configuration['search'];
-            $paypal_payment = $configuration['paypal_payment'];
-            $creditcard_payment = $configuration['creditcard_payment'];
-            $mobile_payment = $configuration['mobile_payment'];
-            $cart = $configuration['cart'];
-            $security = $configuration['security'];
-            $backup = $configuration['backup'];
-            $seo = $configuration['seo'];
-            $twitter_socials = $configuration['twitter_socials'];
-            $facebook_socials = $configuration['facebook_socials'];
-            $youtube_socials = $configuration['youtube_socials'];
-
-            $process = new Process(['python3', app_path('Runner/runner.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment,$mobile_payment, $cart, $security,$backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials]);
-            $process->setTimeout(240);
-            $process->setIdleTimeout(240);
-            $process->run();
         }
 
         if ($line == 0) {

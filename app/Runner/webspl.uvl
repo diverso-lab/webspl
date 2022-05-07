@@ -4,18 +4,20 @@ features
             Server { abstract }
                 mandatory
                     PHP
-                        or
-                            v74
-                            v81
+                        v74
                     Storage
                         or
-                            Low
-                            Enought
+                            LOW
+                            ENOUGH
         optional
             Web { abstract }
                 mandatory
                     Catalog
-                    Shopping
+                    Search
+                        or
+                            BASIC
+                            ADVANCED
+                    Shopping { abstract }
                         mandatory
                             Cart
                             Payment
@@ -23,24 +25,20 @@ features
                                     PayPal
                                     CreditCard
                                     Mobile
-                    Contact
                     Security
                         or
-                            High
-                            Standard
+                            HIGH
+                            STANDARD
                 optional
-                    Search
-                        or
-                            Basic
-                            Advanced
                     Backup
-                    Marketing
+                    Marketing { abstract }
                         SEO
                         Socials
-                            or
+                            alternative
                                 Twitter
                                 Facebook
                                 YouTube
 constraints
+    CreditCard => High
     CreditCard => High
     Low => !Backup
