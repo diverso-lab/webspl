@@ -1,9 +1,4 @@
 <div id="top"></div>
-[![Contributors]][contributors-url]
-[![Forks]][forks-url]
-[![Stargazers]][stars-url]
-[![Issues]][issues-url]
-
 <br />
 <div align="center">
   <a href="https://github.com/diverso-lab/webspl">
@@ -102,11 +97,11 @@ To get a local copy up and running follow these simple example steps.
   ```
 4. Update the .env file providing the HOME_PATH and the DB connection
 
-6. Migrate the DB
+5. Migrate the DB
   ```sh
   php artisan migrate:fresh
   ```
-7. Run the app:
+6. Run the app:
   ```sh
   php artisan serve
   ```
