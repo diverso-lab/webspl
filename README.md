@@ -33,8 +33,6 @@ There are a few known bugs that we acknowledge, described in the projects sectio
 
 ### Built With
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-
 * [Laravel](https://laravel.com)
 * [MySQL](https://www.mysql.com/)
 * [FLAMA](https://github.com/diverso-lab/core)
@@ -94,9 +92,3 @@ Don't forget to give the project a star! Thanks again!
 5. Open a Pull Request
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-[contributors-url]: https://github.com/diverso-lab/webspl/graphs/contributors
-[forks-url]: https://github.com/diverso-lab/webspl/network/members
-[stars-url]: https://github.com/diverso-lab/webspl/stargazers
-[issues-url]: https://github.com/diverso-lab/webspl/issues
-
