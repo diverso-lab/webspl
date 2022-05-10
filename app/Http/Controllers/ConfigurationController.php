@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Illuminate\Support\Facades\Storage;
+use File;
+use Redirect;
 
 
 /**
@@ -87,10 +89,13 @@ class ConfigurationController extends Controller
         $facebook_socials = request('facebook_socials');
         $youtube_socials = request('youtube_socials');
 
+        $HOME_PATH = $_ENV["HOME_PATH"];
+        File::makeDirectory("".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."");
+
         $flama = new Process(['python3.9', app_path('Runner/flama.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment,$mobile_payment, $cart, $security, $backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials]);
         $flama->run();
-        $HOME_PATH = $_ENV["HOME_PATH"];
-        $line = fgets(fopen( "".$HOME_PATH."/webspl/app/Runner/result/".$web_name.".txt", 'r'));
+
+        $line = fgets(fopen( "".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."/result.txt", 'r'));
 
         if ($line == '1') {
 
@@ -120,12 +125,12 @@ class ConfigurationController extends Controller
                 'user_id' => Auth::user()->id
             ]);
 
-        }
-
-        if ($line == 0) {
-            throw new ProcessFailedException($line);
-        } else {
             return redirect()->route('configurations.index');
+
+        } else {
+
+
+            
         }
         
     }

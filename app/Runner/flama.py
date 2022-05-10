@@ -2,7 +2,8 @@
 import os
 import sys
 import csv
-from famapy.core.discover import DiscoverMetamodels;
+import shutil
+from famapy.core.discover import DiscoverMetamodels
 
 web_name = sys.argv[1]
 php = sys.argv[4]
@@ -18,52 +19,62 @@ twitter_socials = sys.argv[15]
 facebook_socials = sys.argv[16]
 youtube_socials = sys.argv[17]
 
-with open(os.getenv('HOME_PATH') + '/webspl/app/Runner/csv/' + web_name + '.csv', 'w', encoding='UTF8') as f:
+with open(os.getenv('HOME_PATH') + '/webspl/app/Runner/websites/' + web_name + '/features.csv', 'w', encoding='UTF8') as f:
     writer = csv.writer(f)
-    writer.writerow(['v74'])
-    writer.writerow(['Catalog'])
-    writer.writerow(['Cart'])
+    writer.writerow(['eCommerce', 'True'])
+    writer.writerow(['Server', 'True'])
+    writer.writerow(['Web', 'True'])
+    writer.writerow(['Catalog', 'True'])
+    writer.writerow(['Search', 'True'])
+    writer.writerow(['Shopping', 'True'])
+    writer.writerow(['Security', 'True'])
+    writer.writerow(['Cart', 'True'])
+    writer.writerow(['Payment', 'True'])
+    writer.writerow(['PHP', 'True'])
+    writer.writerow(['Storage', 'True'])
+    writer.writerow(['v74', 'True'])
 
     if storage == 'LOW':
-        writer.writerow(['LOW'])
+        writer.writerow(['LOW', 'True'])
     else:
-        writer.writerow(['ENOUGH'])
+        writer.writerow(['ENOUGH', 'True'])
 
     if security == 'HIGH':
-        writer.writerow(['HIGH'])
+        writer.writerow(['HIGH', 'True'])
     else:
-        writer.writerow(['STANDARD'])
+        writer.writerow(['STANDARD', 'True'])
 
     if search == 'BASIC':
-        writer.writerow(['BASIC'])
+        writer.writerow(['BASIC', 'True'])
     else:
-        writer.writerow(['ADVANCED'])
+        writer.writerow(['ADVANCED', 'True'])
 
     if backup == '1':
-        writer.writerow(['Backup'])
+        writer.writerow(['Backup', 'True'])
     if seo == '1':
-        writer.writerow(['SEO'])
+        writer.writerow(['SEO', 'True'])
     if paypal_payment == '1':
-        writer.writerow(['PayPal'])
+        writer.writerow(['PayPal', 'True'])
     if creditcard_payment == '1':
-        writer.writerow(['CreditCard'])
+        writer.writerow(['CreditCard', 'True'])
     if mobile_payment == '1':
-        writer.writerow(['Mobile'])
+        writer.writerow(['Mobile', 'True'])
     if twitter_socials == '1':
-        writer.writerow(['Twitter'])
+        writer.writerow(['Twitter', 'True'])
     if facebook_socials == '1':
-        writer.writerow(['Facebook'])
+        writer.writerow(['Facebook', 'True'])
     if youtube_socials == '1':
-        writer.writerow(['YouTube'])
+        writer.writerow(['YouTube', 'True'])
 
+os.system('cp ${HOME_PATH}/webspl/app/Runner/websites/' + web_name + "/features.csv valid_configuration.csv")
 
 dm = DiscoverMetamodels()
-flama = dm.use_operation_from_file("Valid", os.getenv('HOME_PATH') + "/webspl/app/Runner/webspl.uvl")
+flama = dm.use_operation_from_file("ValidConfiguration", str(os.getenv('HOME_PATH')) + "/webspl/app/Runner/webspl.uvl")
 
 if (flama == True):
     result = '1'
 else:
     result = '0'
 
-with open(os.getenv('HOME_PATH') + '/webspl/app/Runner/result/' + web_name + '.txt', 'w') as f:
+with open(os.getenv('HOME_PATH') + '/webspl/app/Runner/websites/' + web_name + '/result.txt', 'w') as f:
     f.write(result)

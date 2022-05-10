@@ -74,14 +74,14 @@ body, html {
         <div class="row">
             <div class="col-md-12">
 
-                @includeif('partials.errors')
+              @includeif('partials.errors')
 
                 <div class="card card-default">
                     <div class="card-header">
                         <span class="card-title">Create Configuration</span>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('configurations.store') }}"  role="form" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('configurations.store') }}"  role="form">
                             @csrf
 
                             @include('configuration.form')

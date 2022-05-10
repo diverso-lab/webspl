@@ -1,44 +1,45 @@
 features
-    WebSPL { abstract }
+    eCommerce { abstract }
         mandatory
             Server { abstract }
                 mandatory
                     PHP
-                        v74
+                        mandatory
+                            v74
                     Storage
-                        or
+                        alternative
                             LOW
                             ENOUGH
-        optional
             Web { abstract }
                 mandatory
                     Catalog
                     Search
-                        or
+                        alternative
                             BASIC
                             ADVANCED
-                    Shopping { abstract }
+                    Shopping 
                         mandatory
                             Cart
                             Payment
-                                alternative
+                                or
                                     PayPal
                                     CreditCard
                                     Mobile
                     Security
-                        or
+                        alternative
                             HIGH
                             STANDARD
                 optional
                     Backup
-                    Marketing { abstract }
-                        SEO
-                        Socials
-                            alternative
-                                Twitter
-                                Facebook
-                                YouTube
+                    Marketing
+                        optional
+                            SEO
+                            Socials
+                                or
+                                    Twitter
+                                    Facebook
+                                    YouTube
 constraints
-    CreditCard => High
-    CreditCard => High
-    Low => !Backup
+    CreditCard => HIGH
+    Mobile => HIGH
+    LOW => !Backup

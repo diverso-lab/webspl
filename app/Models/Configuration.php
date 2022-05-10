@@ -15,8 +15,8 @@ class Configuration extends Model
 {
 
     static $rules = [
-      'web_name' => 'required',
-      'admin_email' => 'required',
+      'web_name' => ['required', 'unique:configurations,web_name', 'min:5', 'max:50', 'alpha_dash'],
+      'admin_email' => ['required', 'min:5', 'max:50', 'email:rfc'],
       'theme' => 'required',
       'php' => 'required',
       'storage' => 'required',

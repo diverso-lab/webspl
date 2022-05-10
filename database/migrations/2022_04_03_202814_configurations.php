@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum('status', ['LOADING', 'DONE'])->default('LOADING');
             
             # Settings
-            $table->string('web_name');
+            $table->string('web_name')->unique();
             $table->string('admin_email');
             $table->string('theme');
             

@@ -1,6 +1,7 @@
 
 <div class="box box-info padding-1">
     <div class="box-body">
+
         <h4>Website Details</h4>
         <div class="form-group">
             {{ Form::label('web_name') }}
