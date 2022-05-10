@@ -130,6 +130,7 @@ class ConfigurationController extends Controller
 
         } else {
 
+            File::deleteDirectory("".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."");
             return redirect('configurations/create')->with('flama', 'La configuración que ha generado no es válida.')->withInput();
             
         }
