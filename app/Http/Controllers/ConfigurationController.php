@@ -88,6 +88,7 @@ class ConfigurationController extends Controller
         $twitter_socials = request('twitter_socials');
         $facebook_socials = request('facebook_socials');
         $youtube_socials = request('youtube_socials');
+        $username = Auth::user()->name;
 
         $HOME_PATH = $_ENV["HOME_PATH"];
         File::makeDirectory("".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."");
@@ -98,8 +99,7 @@ class ConfigurationController extends Controller
         $line = fgets(fopen( "".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."/result.txt", 'r'));
 
         if ($line == '1') {
-
-            $process = new Process(['python3', app_path('Runner/runner.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment,$mobile_payment, $cart, $security, $backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials]);
+            $process = new Process(['python3', app_path('Runner/runner.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment,$mobile_payment, $cart, $security, $backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials, $username]);
             $process->setTimeout(450);
             $process->setIdleTimeout(450);
             $process->run();
@@ -116,6 +116,7 @@ class ConfigurationController extends Controller
                 'creditcard_payment' => request('creditcard_payment'),
                 'mobile_payment' => request('mobile_payment'),
                 'cart' => '1',
+                'status' => 'DONE',
                 'security' => request('security'),
                 'backup' => request('backup'),
                 'seo' => request('seo'),

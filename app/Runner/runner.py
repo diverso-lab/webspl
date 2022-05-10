@@ -19,6 +19,7 @@ seo = sys.argv[14]
 twitter_socials = sys.argv[15]
 facebook_socials = sys.argv[16]
 youtube_socials = sys.argv[17]
+username = sys.argv[18]
 
 ENV = os.getenv('HOME_PATH')
 
@@ -144,6 +145,7 @@ os.system("cd " + ENV + "/generated-websites/" + web_name + "/auto-wp && sudo do
 
 for plugin in plugin_list:
     os.system("cd " + ENV + "/generated-websites/" + web_name + "/auto-wp && sudo docker-compose run --rm wpcli plugin install " + plugin + " --activate")
-# os.system("cd /home/joszamama/diverso-lab/generated-websites/ && zip -r " + web_name + ".zip " + web_name)
-# os.system("cd /home/joszamama/diverso-lab/generated-websites/ && mv " + web_name + ".zip /home/joszamama/diverso-lab/webspl/storage/app/public/")
-# os.system("cd /home/joszamama/diverso-lab/generated-websites/ && rm -r " + web_name + ".zip ")
+
+os.system("cd " + ENV + "/generated-websites/ && zip -r " + web_name + ".zip")
+os.system("cd " + ENV + "/generated-websites/ && mv " + web_name + ".zip " + ENV + "/webspl/storage/app/" + username)
+os.system("cd " + ENV + "/generated-websites/ && rm -r " + web_name + ".zip ")

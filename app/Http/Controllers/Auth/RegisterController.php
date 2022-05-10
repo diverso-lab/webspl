@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use File;
 
 class RegisterController extends Controller
 {
@@ -64,6 +65,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
+        $HOME_PATH = $_ENV["HOME_PATH"];
+        File::makeDirectory("".$HOME_PATH."/webspl/storage/app/".$data['name']."");
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],

@@ -116,7 +116,7 @@ body, html {
                                             <td>
                                                 <form action="{{ route('configurations.destroy',$configuration->id) }}" method="POST">
                                                     <a class="btn btn-sm btn-primary " href="http://localhost/" target="_blank"><i class="fa fa-fw fa-eye"></i> Go</a>
-                                                    <a class="btn btn-sm btn-success" href="storage/{{ $configuration->web_name }}.zip"><i class="fa fa-fw fa-edit"></i> Download</a>
+                                                    <a class="btn btn-sm btn-success" href="download/{{ $configuration->web_name }}.zip"><i class="fa fa-fw fa-edit"></i> Download</a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>

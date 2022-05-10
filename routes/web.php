@@ -21,3 +21,4 @@ Auth::routes();
 
 Route::resource('configurations', App\Http\Controllers\ConfigurationController::class)->middleware('auth');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/download/{zip}', [App\Http\Controllers\DownloadController::class, 'download'])->name('download');
