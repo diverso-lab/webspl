@@ -14,12 +14,23 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
+      p {
+      overflow: hidden;
+      max-width: 450px;
+    }
+    :invalid ~ .test {
+      display: none;
+    }
+    button {
+      width: 450px;
+      margin: 10px;
+    }
     select {
-        width: 150px;
+        width: 450px;
         margin: 10px;
     }
     select:focus {
-        min-width: 150px;
+        min-width: 450px;
         width: auto;
     }
 body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
@@ -80,7 +91,7 @@ body, html {
                     <div class="card-header">
                         <span class="card-title">Create Configuration</span>
                     </div>
-                    <div class="card-body">
+                    <div class="d-flex justify-content-between card-body">
                         <form method="POST" action="{{ route('configurations.store') }}"  role="form">
                             @csrf
 

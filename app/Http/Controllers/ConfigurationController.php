@@ -130,7 +130,7 @@ class ConfigurationController extends Controller
 
         } else {
 
-
+            return redirect('configurations/create')->with('flama', 'La configuración que ha generado no es válida.')->withInput();
             
         }
         

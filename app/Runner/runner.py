@@ -146,6 +146,5 @@ os.system("cd " + ENV + "/generated-websites/" + web_name + "/auto-wp && sudo do
 for plugin in plugin_list:
     os.system("cd " + ENV + "/generated-websites/" + web_name + "/auto-wp && sudo docker-compose run --rm wpcli plugin install " + plugin + " --activate")
 
-os.system("cd " + ENV + "/generated-websites/ && zip -r " + web_name + ".zip")
-os.system("cd " + ENV + "/generated-websites/ && mv " + web_name + ".zip " + ENV + "/webspl/storage/app/" + username)
-os.system("cd " + ENV + "/generated-websites/ && rm -r " + web_name + ".zip ")
+os.system("cd " + ENV + "/generated-websites/ && zip -r " + web_name + ".zip " + web_name)
+os.system("cd " + ENV + "/generated-websites/ && cp " + web_name + ".zip " + ENV + "/webspl/storage/app/" + username)
