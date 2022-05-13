@@ -22,6 +22,8 @@ youtube_socials = sys.argv[17]
 username = sys.argv[18]
 
 ENV = os.getenv('HOME_PATH')
+WP_PORT = str(5000)
+PHPMYADMIN_PORT = str(5001)
 
 plugin_list = []
 plugin_list.append("woocommerce")
@@ -116,24 +118,56 @@ if (youtube_socials == '1'):
 os.system("cd " + ENV + " && mkdir generated-websites")
 os.system("cd " +  ENV + "/generated-websites && mkdir " + web_name + " && cd " + web_name + " && git clone https://github.com/joszamama/auto-wp.git")
 
+# Web Name
 reading_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "r")
 new_file_content = ""
 for line in reading_file:
   stripped_line = line.strip()
-  new_line = stripped_line.replace('WORDPRESS_WEBSITE_TITLE="MyBlog"', 'WORDPRESS_WEBSITE_TITLE="' + web_name + '"')
+  new_line = stripped_line.replace('MyBlog', web_name)
   new_file_content += new_line +"\n"
-  #new_line = stripped_line.replace('WORDPRESS_ADMIN_EMAIL="your-email@example.com"', 'WORDPRESS_ADMIN_EMAIL="' + admin_email + '"')
-  #new_file_content += new_line +"\n"
 reading_file.close()
 writing_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "w")
 writing_file.write(new_file_content)
 writing_file.close()
-
+# Docker Container Name
 reading_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "r")
 new_file_content = ""
 for line in reading_file:
   stripped_line = line.strip()
-  new_line = stripped_line.replace('WORDPRESS_ADMIN_EMAIL="your-email@example.com"', 'WORDPRESS_ADMIN_EMAIL="' + admin_email + '"')
+  new_line = stripped_line.replace('COMPOSE_PROJECT_NAME=wordpress', 'COMPOSE_PROJECT_NAME=' + web_name)
+  new_file_content += new_line +"\n"
+reading_file.close()
+writing_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "w")
+writing_file.write(new_file_content)
+writing_file.close()
+# Email
+reading_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "r")
+new_file_content = ""
+for line in reading_file:
+  stripped_line = line.strip()
+  new_line = stripped_line.replace('your-email@example.com', admin_email)
+  new_file_content += new_line +"\n"
+reading_file.close()
+writing_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "w")
+writing_file.write(new_file_content)
+writing_file.close()
+# http://localhost:WP_PORT
+reading_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "r")
+new_file_content = ""
+for line in reading_file:
+  stripped_line = line.strip()
+  new_line = stripped_line.replace('WP_PORT', WP_PORT)
+  new_file_content += new_line +"\n"
+reading_file.close()
+writing_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "w")
+writing_file.write(new_file_content)
+writing_file.close()
+# PHPMYADMIN
+reading_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "r")
+new_file_content = ""
+for line in reading_file:
+  stripped_line = line.strip()
+  new_line = stripped_line.replace('PHPMYADMIN_PORT=PHPMYADMIN_PORT', 'PHPMYADMIN_PORT=' + PHPMYADMIN_PORT )
   new_file_content += new_line +"\n"
 reading_file.close()
 writing_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "w")
@@ -148,3 +182,4 @@ for plugin in plugin_list:
 
 os.system("cd " + ENV + "/generated-websites/ && zip -r " + web_name + ".zip " + web_name)
 os.system("cd " + ENV + "/generated-websites/ && cp " + web_name + ".zip " + ENV + "/webspl/storage/app/" + username)
+os.system("cd " + ENV + "/generated-websites/ && sudo rm -rf " + web_name + ".zip")
