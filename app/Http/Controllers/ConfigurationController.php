@@ -71,6 +71,10 @@ class ConfigurationController extends Controller
     {
         request()->validate(Configuration::$rules);
 
+        $port_detector = new Process(['python3.9', app_path('Runner/detector.py')]);
+        $port_detector->run();
+        $assigned_port = $port_detector->getOutput();
+
         $web_name = request('web_name');
         $admin_email = request('admin_email');
         $theme = request('theme');
@@ -99,7 +103,7 @@ class ConfigurationController extends Controller
         $line = fgets(fopen( "".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."/result.txt", 'r'));
 
         if ($line == '1') {
-            $process = new Process(['python3', app_path('Runner/runner.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment,$mobile_payment, $cart, $security, $backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials, $username]);
+            $process = new Process(['python3', app_path('Runner/runner.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment,$mobile_payment, $cart, $security, $backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials, $username, $assigned_port]);
             $process->setTimeout(450);
             $process->setIdleTimeout(450);
             $process->run();
@@ -123,6 +127,7 @@ class ConfigurationController extends Controller
                 'twitter_socials' => request('twitter_socials'),
                 'facebook_socials' => request('facebook_socials'),
                 'youtube_socials' => request('youtube_socials'),
+                'assigned_port' => $assigned_port,
                 'user_id' => Auth::user()->id
             ]);
 

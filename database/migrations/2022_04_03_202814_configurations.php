@@ -41,6 +41,7 @@ return new class extends Migration
             $table->boolean('twitter_socials');
             $table->boolean('facebook_socials');
             $table->boolean('youtube_socials');
+            $table->string('assigned_port');
 
             $table->timestamps();
         });

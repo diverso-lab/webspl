@@ -22,8 +22,8 @@ youtube_socials = sys.argv[17]
 username = sys.argv[18]
 
 ENV = os.getenv('HOME_PATH')
-WP_PORT = str(5000)
-PHPMYADMIN_PORT = str(5001)
+WP_PORT = sys.argv[19]
+PHPMYADMIN_PORT = str(sys.argv[20] + 1)
 
 plugin_list = []
 plugin_list.append("woocommerce")

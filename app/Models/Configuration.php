@@ -39,7 +39,7 @@ class Configuration extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'status', 'web_name', 'admin_email', 'theme', 'php', 'storage', 'search', 'paypal_payment', 'creditcard_payment', 'mobile_payment', 'security', 'backup', 'seo', 'twitter_socials', 'facebook_socials', 'youtube_socials'];
+    protected $fillable = ['assigned_port', 'user_id', 'status', 'web_name', 'admin_email', 'theme', 'php', 'storage', 'search', 'paypal_payment', 'creditcard_payment', 'mobile_payment', 'security', 'backup', 'seo', 'twitter_socials', 'facebook_socials', 'youtube_socials'];
 
     public function user() {
       return $this->belongsTo(User::class);
