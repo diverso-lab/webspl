@@ -100,9 +100,7 @@ class ConfigurationController extends Controller
         $flama = new Process(['python3.9', app_path('Runner/flama.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment,$mobile_payment, $cart, $security, $backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials]);
         $flama->run();
 
-        $line = fgets(fopen( "".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."/result.txt", 'r'));
-
-        if ($line == '1') {
+        if ($flama->getOutput() == True) {
             $process = new Process(['python3', app_path('Runner/runner.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment,$mobile_payment, $cart, $security, $backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials, $username, $assigned_port]);
             $process->setTimeout(450);
             $process->setIdleTimeout(450);
@@ -192,6 +190,16 @@ class ConfigurationController extends Controller
      */
     public function destroy($id)
     {
+        $web_name = Configuration::find($id)->web_name;
+        $username = Auth::user()->name;
+        $HOME_PATH = $_ENV["HOME_PATH"];
+
+        $destroyer = new Process(['python3.9', app_path('Runner/destroyer.py'), $web_name]);
+        $destroyer->run();
+
+        File::deleteDirectory("".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."");
+        File::delete("".$HOME_PATH."/webspl/storage/app/".$username."/".$web_name.".zip");
+
         $configuration = Configuration::find($id)->delete();
 
         return redirect()->route('configurations.index')

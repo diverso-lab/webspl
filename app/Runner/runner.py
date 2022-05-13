@@ -22,8 +22,8 @@ youtube_socials = sys.argv[17]
 username = sys.argv[18]
 
 ENV = os.getenv('HOME_PATH')
-WP_PORT = sys.argv[19]
-PHPMYADMIN_PORT = str(sys.argv[20] + 1)
+WP_PORT = str(sys.argv[19])
+PHPMYADMIN_PORT = str(int(sys.argv[19]) + 1)
 
 plugin_list = []
 plugin_list.append("woocommerce")
@@ -129,6 +129,7 @@ reading_file.close()
 writing_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "w")
 writing_file.write(new_file_content)
 writing_file.close()
+
 # Docker Container Name
 reading_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "r")
 new_file_content = ""
@@ -140,6 +141,7 @@ reading_file.close()
 writing_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "w")
 writing_file.write(new_file_content)
 writing_file.close()
+
 # Email
 reading_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "r")
 new_file_content = ""
@@ -151,17 +153,43 @@ reading_file.close()
 writing_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "w")
 writing_file.write(new_file_content)
 writing_file.close()
+
 # http://localhost:WP_PORT
 reading_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "r")
 new_file_content = ""
 for line in reading_file:
   stripped_line = line.strip()
-  new_line = stripped_line.replace('WP_PORT', WP_PORT)
+  new_line = stripped_line.replace('WORDPRESS_WEBSITE_URL=http://localhost:WP_PORT', 'WORDPRESS_WEBSITE_URL=http://localhost:' + WP_PORT)
   new_file_content += new_line +"\n"
 reading_file.close()
 writing_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "w")
 writing_file.write(new_file_content)
 writing_file.close()
+
+# localhost:WP_PORT
+reading_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "r")
+new_file_content = ""
+for line in reading_file:
+  stripped_line = line.strip()
+  new_line = stripped_line.replace('WORDPRESS_WEBSITE_URL_WITHOUT_HTTP=localhost:WP_PORT', 'WORDPRESS_WEBSITE_URL_WITHOUT_HTTP=localhost:' + WP_PORT)
+  new_file_content += new_line +"\n"
+reading_file.close()
+writing_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "w")
+writing_file.write(new_file_content)
+writing_file.close()
+
+#WP_PORT
+reading_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "r")
+new_file_content = ""
+for line in reading_file:
+  stripped_line = line.strip()
+  new_line = stripped_line.replace('WORDPRESS_PORTING=WP_PORT', "WORDPRESS_PORTING=" + WP_PORT)
+  new_file_content += new_line +"\n"
+reading_file.close()
+writing_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "w")
+writing_file.write(new_file_content)
+writing_file.close()
+
 # PHPMYADMIN
 reading_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "r")
 new_file_content = ""

@@ -115,7 +115,9 @@ body, html {
 
                                             <td>
                                                 <form action="{{ route('configurations.destroy',$configuration->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="http://localhost/" target="_blank"><i class="fa fa-fw fa-eye"></i> Go</a>
+                                                    <a class="btn btn-sm btn-primary " href="http://localhost:{{$configuration->assigned_port}}" target="_blank"><i class="fa fa-fw fa-eye"></i> WordPress</a>
+                                                    <a class="btn btn-sm btn-primary " href="http://localhost:{{$configuration->assigned_port+1}}" target="_blank"><i class="fa fa-fw fa-eye"></i> phpMyAdmin</a>
+
                                                     <a class="btn btn-sm btn-success" href="download/{{ $configuration->web_name }}.zip"><i class="fa fa-fw fa-edit"></i> Download</a>
                                                     @csrf
                                                     @method('DELETE')

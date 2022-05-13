@@ -70,11 +70,4 @@ os.system('cp ${HOME_PATH}/webspl/app/Runner/websites/' + web_name + "/features.
 
 dm = DiscoverMetamodels()
 flama = dm.use_operation_from_file("ValidConfiguration", str(os.getenv('HOME_PATH')) + "/webspl/app/Runner/webspl.uvl")
-
-if (flama == True):
-    result = '1'
-else:
-    result = '0'
-
-with open(os.getenv('HOME_PATH') + '/webspl/app/Runner/websites/' + web_name + '/result.txt', 'w') as f:
-    f.write(result)
+print(flama)
