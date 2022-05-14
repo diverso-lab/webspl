@@ -11,6 +11,7 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 use Illuminate\Support\Facades\Storage;
 use File;
 use Redirect;
+use Illuminate\Support\Str;
 
 
 /**
@@ -71,6 +72,10 @@ class ConfigurationController extends Controller
     {
         request()->validate(Configuration::$rules);
 
+        $password = Str::random(8);
+        $username = Auth::user()->name;
+        $HOME_PATH = $_ENV["HOME_PATH"];
+
         $port_detector = new Process(['python3.9', app_path('Runner/detector.py')]);
         $port_detector->run();
         $assigned_port = $port_detector->getOutput();
@@ -92,51 +97,65 @@ class ConfigurationController extends Controller
         $twitter_socials = request('twitter_socials');
         $facebook_socials = request('facebook_socials');
         $youtube_socials = request('youtube_socials');
-        $username = Auth::user()->name;
 
-        $HOME_PATH = $_ENV["HOME_PATH"];
         File::makeDirectory("".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."");
 
         $flama = new Process(['python3.9', app_path('Runner/flama.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment,$mobile_payment, $cart, $security, $backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials]);
         $flama->run();
 
-        if ($flama->getOutput() == True) {
-            $process = new Process(['python3', app_path('Runner/runner.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment,$mobile_payment, $cart, $security, $backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials, $username, $assigned_port]);
-            $process->setTimeout(450);
-            $process->setIdleTimeout(450);
-            $process->run();
+        $line = fgets(fopen( "".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."/result.txt", 'r'));
 
-            $configuration = Configuration::create([
-                'web_name' => request('web_name'),
-                'admin_email' => request('admin_email'),
-                'theme' => request('theme'),
-                'php' => request('php'),
-                'storage' => request('storage'),
-                'catalog' => '1',
-                'search' => request('search'),
-                'paypal_payment' => request('paypal_payment'),
-                'creditcard_payment' => request('creditcard_payment'),
-                'mobile_payment' => request('mobile_payment'),
-                'cart' => '1',
-                'status' => 'DONE',
-                'security' => request('security'),
-                'backup' => request('backup'),
-                'seo' => request('seo'),
-                'twitter_socials' => request('twitter_socials'),
-                'facebook_socials' => request('facebook_socials'),
-                'youtube_socials' => request('youtube_socials'),
-                'assigned_port' => $assigned_port,
-                'user_id' => Auth::user()->id
-            ]);
+        if ($line == '1') {
+            
+            try {
+                
+                $process = new Process(['python3', app_path('Runner/runner.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment,$mobile_payment, $cart, $security, $backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials, $username, $assigned_port, $password]);
+                $process->setTimeout(450);
+                $process->setIdleTimeout(450);
+                $process->run();
 
-            return redirect()->route('configurations.index');
+                $configuration = Configuration::create([
+                    'web_name' => request('web_name'),
+                    'admin_email' => request('admin_email'),
+                    'theme' => request('theme'),
+                    'php' => request('php'),
+                    'storage' => request('storage'),
+                    'catalog' => '1',
+                    'search' => request('search'),
+                    'paypal_payment' => request('paypal_payment'),
+                    'creditcard_payment' => request('creditcard_payment'),
+                    'mobile_payment' => request('mobile_payment'),
+                    'cart' => '1',
+                    'status' => 'DONE',
+                    'security' => request('security'),
+                    'backup' => request('backup'),
+                    'seo' => request('seo'),
+                    'twitter_socials' => request('twitter_socials'),
+                    'facebook_socials' => request('facebook_socials'),
+                    'youtube_socials' => request('youtube_socials'),
+                    'assigned_port' => $assigned_port,
+                    'user_id' => Auth::user()->id
+                ]);
 
+                $sender = new Process(['python3.9', app_path('Runner/sender.py'), $admin_email, $username, $password]);
+                $sender->run();
+
+            } catch (Throwable $exception) {
+
+                File::deleteDirectory("".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."");
+                File::delete("".$HOME_PATH."/webspl/storage/".$username."/".$web_name.".zip");
+                return redirect('configurations/create')->with('flama', 'Ha habido un error, inténtelo de nuevo más tarde.')->withInput();
+        
+            }
+        
         } else {
 
             File::deleteDirectory("".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."");
             return redirect('configurations/create')->with('flama', 'La configuración que ha generado no es válida.')->withInput();
             
         }
+
+        return redirect()->route('configurations.index');
         
     }
 

@@ -1,9 +1,15 @@
 #!usr/bin/env python3
+from ast import Str
 import os
 import sys
 import csv
 import shutil
 from famapy.core.discover import DiscoverMetamodels
+from dotenv import load_dotenv
+
+load_dotenv()
+
+HOME_PATH = os.getenv('HOME_PATH')
 
 web_name = sys.argv[1]
 php = sys.argv[4]
@@ -66,8 +72,18 @@ with open(os.getenv('HOME_PATH') + '/webspl/app/Runner/websites/' + web_name + '
     if youtube_socials == '1':
         writer.writerow(['YouTube', 'True'])
 
-os.system('cp ${HOME_PATH}/webspl/app/Runner/websites/' + web_name + "/features.csv valid_configuration.csv")
+os.system('sudo cp ' + HOME_PATH + '/webspl/app/Runner/websites/' + web_name + '/features.csv valid_configuration.csv')
 
 dm = DiscoverMetamodels()
-flama = dm.use_operation_from_file("ValidConfiguration", str(os.getenv('HOME_PATH')) + "/webspl/app/Runner/webspl.uvl")
-print(flama)
+flama = dm.use_operation_from_file("ValidConfiguration", HOME_PATH + "/webspl/app/Runner/webspl.uvl")
+
+if (flama == True):
+    result = '1'
+else:
+    result = '0'
+
+with open(os.getenv('HOME_PATH') + '/webspl/app/Runner/websites/' + web_name + '/result.txt', 'w') as f:
+    f.write(result)
+    f.close()
+
+print(result)

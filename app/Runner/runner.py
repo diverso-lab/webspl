@@ -24,6 +24,7 @@ username = sys.argv[18]
 ENV = os.getenv('HOME_PATH')
 WP_PORT = str(sys.argv[19])
 PHPMYADMIN_PORT = str(int(sys.argv[19]) + 1)
+PASS = str(sys.argv[20])
 
 plugin_list = []
 plugin_list.append("woocommerce")
@@ -202,6 +203,54 @@ writing_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "
 writing_file.write(new_file_content)
 writing_file.close()
 
+# WP USER
+reading_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "r")
+new_file_content = ""
+for line in reading_file:
+  stripped_line = line.strip()
+  new_line = stripped_line.replace('WORDPRESS_ADMIN_USER="wordpress"', 'WORDPRESS_ADMIN_USER=' + username )
+  new_file_content += new_line +"\n"
+reading_file.close()
+writing_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "w")
+writing_file.write(new_file_content)
+writing_file.close()
+
+# WP PASS
+reading_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "r")
+new_file_content = ""
+for line in reading_file:
+  stripped_line = line.strip()
+  new_line = stripped_line.replace('WORDPRESS_ADMIN_PASSWORD="wordpress"', 'WORDPRESS_ADMIN_PASSWORD=' + PASS )
+  new_file_content += new_line +"\n"
+reading_file.close()
+writing_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "w")
+writing_file.write(new_file_content)
+writing_file.close()
+
+# PHPMA USER
+reading_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "r")
+new_file_content = ""
+for line in reading_file:
+  stripped_line = line.strip()
+  new_line = stripped_line.replace('DATABASE_USER=root', 'DATABASE_USER=' + username )
+  new_file_content += new_line +"\n"
+reading_file.close()
+writing_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "w")
+writing_file.write(new_file_content)
+writing_file.close()
+
+# PHPMA PASS
+reading_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "r")
+new_file_content = ""
+for line in reading_file:
+  stripped_line = line.strip()
+  new_line = stripped_line.replace('DATABASE_PASSWORD=password', 'DATABASE_PASSWORD=' + PASS )
+  new_file_content += new_line +"\n"
+reading_file.close()
+writing_file = open(ENV + "/generated-websites/" + web_name + "/auto-wp/.env", "w")
+writing_file.write(new_file_content)
+writing_file.close()
+
 os.system("cd " + ENV + "/generated-websites/" + web_name + "/auto-wp && sudo make autoinstall")
 os.system("cd " + ENV + "/generated-websites/" + web_name + "/auto-wp && sudo docker-compose run --rm wpcli theme install " + theme + " --activate")
 
@@ -209,5 +258,5 @@ for plugin in plugin_list:
     os.system("cd " + ENV + "/generated-websites/" + web_name + "/auto-wp && sudo docker-compose run --rm wpcli plugin install " + plugin + " --activate")
 
 os.system("cd " + ENV + "/generated-websites/ && zip -r " + web_name + ".zip " + web_name)
-os.system("cd " + ENV + "/generated-websites/ && cp " + web_name + ".zip " + ENV + "/webspl/storage/app/" + username)
+os.system("cd " + ENV + "/generated-websites/ && mv " + web_name + ".zip " + ENV + "/webspl/storage/app/" + username)
 os.system("cd " + ENV + "/generated-websites/ && sudo rm -rf " + web_name + ".zip")

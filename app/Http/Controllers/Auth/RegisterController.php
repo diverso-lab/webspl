@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Symfony\Component\Process\Process;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -69,10 +70,18 @@ class RegisterController extends Controller
         $HOME_PATH = $_ENV["HOME_PATH"];
         File::makeDirectory("".$HOME_PATH."/webspl/storage/app/".$data['name']."");
 
+        $email = $data['email'];
+        $username = $data['name'];
+
+        $welcomer = new Process(['python3.9', '/home/joszamama/diverso-lab/webspl/app/Runner/welcomer.py', $email, $username]);
+        $welcomer->run();
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        
     }
 }
