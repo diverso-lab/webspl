@@ -64,7 +64,7 @@ body, html {
     <p><a href="#about" class="w3-button w3-white w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Learn More</a></p>
   </div> 
   <div class="w3-display-bottomleft w3-text-grey w3-large" style="padding:24px 48px">
-    <i class="fa fa-github w3-hover-opacity"></i>
+    <a href="https://github.com/diverso-lab/webspl" title="WebSPL" target="_blank"><i class="fa fa-github w3-hover-opacity"></a></i>
   </div>
 </header>
 
@@ -81,7 +81,7 @@ body, html {
     <div class="w3-quarter">
       <i class="fa fa-bars w3-margin-bottom w3-jumbo"></i>
       <p class="w3-large">Test</p>
-      <p>Once you have finished choosing your needs, we use our automatic feature model analysis tool, FLAMA, to validate the new configuration.</p>
+      <p>Once you have finished choosing your needs, we use our automatic feature model analysis tool, <a href="https://github.com/diverso-lab/core" title="WebSPL" target="_blank">Flama</a></i>, to validate the new configuration.</p>
     </div>
     <div class="w3-quarter">
       <i class="fa fa fa-cog w3-margin-bottom w3-jumbo"></i>
