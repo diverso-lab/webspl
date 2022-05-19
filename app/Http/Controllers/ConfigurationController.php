@@ -23,7 +23,7 @@ class ConfigurationController extends Controller
 
     public function __construct()
     {
-        $this->middleware('checkconfiguration', ['except' => ['index', 'create', 'store']]);
+        $this->middleware('checkconfiguration', ['except' => ['index', 'create', 'store', 'stop', 'start', 'destroy']]);
     }
 
     /**
@@ -35,21 +35,13 @@ class ConfigurationController extends Controller
     {
 
         $user = Auth::user();
-
         $configurations =  $user->configurations();
 
         return view('configuration.index', [
             'configurations' => $configurations->paginate(10),
         ]);
 
-        /*
-        return view('configuration.index',compact('configurations')))
-
-        return view('configuration.index', compact('configurations'))
-            ->with('i', (request()->input('page', 1) - 1) * $configurations->perPage());
-*/
-
-    }
+       }
 
     /**
      * Show the form for creating a new resource.
@@ -76,9 +68,48 @@ class ConfigurationController extends Controller
         $username = Auth::user()->name;
         $HOME_PATH = $_ENV["HOME_PATH"];
 
-        $port_detector = new Process(['python3.9', app_path('Runner/detector.py')]);
-        $port_detector->run();
-        $assigned_port = $port_detector->getOutput();
+        # Port detector
+        try {
+
+            $port_detector = new Process(['python3.9', app_path('Runner/detector.py')]);
+            $port_detector->run();
+            $assigned_port = $port_detector->getOutput();
+
+        } catch(Exception $e) {
+
+            return redirect('configurations/create')->with('flama', 'No ports are available, try again later.')->withInput();
+        }
+
+        # Object saving
+        try {
+
+            $configuration = Configuration::create([
+                'web_name' => request('web_name'),
+                'admin_email' => request('admin_email'),
+                'theme' => request('theme'),
+                'php' => request('php'),
+                'storage' => request('storage'),
+                'catalog' => '1',
+                'search' => request('search'),
+                'paypal_payment' => request('paypal_payment'),
+                'creditcard_payment' => request('creditcard_payment'),
+                'mobile_payment' => request('mobile_payment'),
+                'cart' => '1',
+                'security' => request('security'),
+                'backup' => request('backup'),
+                'seo' => request('seo'),
+                'twitter_socials' => request('twitter_socials'),
+                'facebook_socials' => request('facebook_socials'),
+                'youtube_socials' => request('youtube_socials'),
+                'assigned_port' => $assigned_port,
+                'user_id' => Auth::user()->id
+            ]);
+
+        } catch(Exception $e) {
+
+            $configuration->delete();
+            return redirect('configurations/create')->with('flama', 'Could not save the configuration, try again later.')->withInput();
+        }
 
         $web_name = request('web_name');
         $admin_email = request('admin_email');
@@ -98,108 +129,130 @@ class ConfigurationController extends Controller
         $facebook_socials = request('facebook_socials');
         $youtube_socials = request('youtube_socials');
 
-        File::makeDirectory("".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."");
+        # Flama validation
+        try {
 
-        $flama = new Process(['python3.9', app_path('Runner/flama.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment,$mobile_payment, $cart, $security, $backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials]);
-        $flama->run();
+            File::makeDirectory("".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."");
 
-        $line = fgets(fopen( "".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."/result.txt", 'r'));
+            $flama = new Process(['python3.9', app_path('Runner/flama.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment,$mobile_payment, $cart, $security, $backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials]);
+            $flama->run();
 
-        if ($line == '1') {
-            
+            # Site builder
             try {
+
+                $line = fgets(fopen( "".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."/result.txt", 'r'));
+                if ($line == '1') {
+    
+                    $process = new Process(['python3', app_path('Runner/builder.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment,$mobile_payment, $cart, $security, $backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials, $username, $assigned_port, $password]);
+                    $process->setTimeout(450);
+                    $process->setIdleTimeout(450);
+                    $process->run();
+
+                    $configuration->status = 'READY';
+                    $configuration->save();
+    
+                    $sender = new Process(['python3.9', app_path('Runner/sender.py'), $admin_email, $username, $password]);
+                    $sender->run();
                 
-                $process = new Process(['python3', app_path('Runner/runner.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment,$mobile_payment, $cart, $security, $backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials, $username, $assigned_port, $password]);
-                $process->setTimeout(450);
-                $process->setIdleTimeout(450);
-                $process->run();
+                } else {
+        
+                    File::deleteDirectory("".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."");
+                    $configuration->delete();
+                    return redirect('configurations/create')->with('flama', 'The generated configuration is not valid. Please, check the following constraints:')->withInput();           
+                }
 
-                $configuration = Configuration::create([
-                    'web_name' => request('web_name'),
-                    'admin_email' => request('admin_email'),
-                    'theme' => request('theme'),
-                    'php' => request('php'),
-                    'storage' => request('storage'),
-                    'catalog' => '1',
-                    'search' => request('search'),
-                    'paypal_payment' => request('paypal_payment'),
-                    'creditcard_payment' => request('creditcard_payment'),
-                    'mobile_payment' => request('mobile_payment'),
-                    'cart' => '1',
-                    'status' => 'DONE',
-                    'security' => request('security'),
-                    'backup' => request('backup'),
-                    'seo' => request('seo'),
-                    'twitter_socials' => request('twitter_socials'),
-                    'facebook_socials' => request('facebook_socials'),
-                    'youtube_socials' => request('youtube_socials'),
-                    'assigned_port' => $assigned_port,
-                    'user_id' => Auth::user()->id
-                ]);
-
-                $sender = new Process(['python3.9', app_path('Runner/sender.py'), $admin_email, $username, $password]);
-                $sender->run();
-
-            } catch (Throwable $exception) {
-
+            } catch(Exception $e) {
+            
                 File::deleteDirectory("".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."");
                 File::delete("".$HOME_PATH."/webspl/storage/".$username."/".$web_name.".zip");
-                return redirect('configurations/create')->with('flama', 'Ha habido un error, inténtelo de nuevo más tarde.')->withInput();
-        
+                $configuration->delete();
+    
+                return redirect('configurations/create')->with('flama', 'The configuration could not be generated, please try again later.')->withInput();
             }
-        
-        } else {
+
+        } catch(Exception $e) {
 
             File::deleteDirectory("".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."");
-            return redirect('configurations/create')->with('flama', 'La configuración que ha generado no es válida.')->withInput();
-            
+            $configuration->delete();
+            return redirect('configurations/create')->with('flama', 'The configuration could not be validated, please try again later.')->withInput();
         }
 
-        return redirect()->route('configurations.index');
+        return redirect()->route('configurations.index')->with('success', 'Configuration created successfully');
         
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $configuration = Configuration::findOrFail($id);
-
-        return view('configuration.show', compact('configuration'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        return view('configuration.show', compact('configuration'));
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Stop the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
      * @param  Configuration $configuration
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function stop(Request $request, $id)
     {
-        request()->validate(Configuration::$rules);
 
-        $configuration = Configuration::findOrFail($id);
+        try {
 
-        $configuration->update($request->all());
+            $web_name = Configuration::find($id)->web_name;
+            $username = Auth::user()->name;
+            $HOME_PATH = $_ENV["HOME_PATH"];
+
+            $stopper = new Process(['python3.9', app_path('Runner/stopper.py'), $web_name]);
+            $stopper->run();
+
+            if(!$stopper->isSuccessful()) {
+
+                return redirect()->route('configurations.index')->with('error', 'Your configuration could not be stopped, try again later.');
+            }
+
+            $configuration = Configuration::find($id);
+            $configuration->status = 'PAUSED';
+            $configuration->save();
+
+        } catch(Exception $e) {
+
+            return redirect()->route('configurations.index')->with('error', 'Your configuration could not be stopped, try again later.');
+        }
 
         return redirect()->route('configurations.index')
-            ->with('success', 'Configuration updated successfully');
+            ->with('success', 'Configuration stopped successfully');
+    }
+
+    /**
+     * Start the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  Configuration $configuration
+     * @return \Illuminate\Http\Response
+     */
+    public function start(Request $request, $id)
+    {
+
+        try {
+
+            $web_name = Configuration::find($id)->web_name;
+            $username = Auth::user()->name;
+            $HOME_PATH = $_ENV["HOME_PATH"];
+
+            $starter = new Process(['python3.9', app_path('Runner/starter.py'), $web_name]);
+            $starter->run();
+
+            if(!$starter->isSuccessful()) {
+
+                return redirect()->route('configurations.index')->with('error', 'Your configuration could not be started, please try again later.');
+            }
+
+            $configuration = Configuration::find($id);
+            $configuration->status = 'READY';
+            $configuration->save();
+
+        } catch(Exception $e) {
+
+            return redirect()->route('configurations.index')->with('error', 'Your configuration could not be started, please try again later.');
+        }
+
+        return redirect()->route('configurations.index')
+            ->with('success', 'Configuration started successfully');
     }
 
     /**
@@ -209,17 +262,29 @@ class ConfigurationController extends Controller
      */
     public function destroy($id)
     {
-        $web_name = Configuration::find($id)->web_name;
-        $username = Auth::user()->name;
-        $HOME_PATH = $_ENV["HOME_PATH"];
+        try {
 
-        $destroyer = new Process(['python3.9', app_path('Runner/destroyer.py'), $web_name]);
-        $destroyer->run();
+            $web_name = Configuration::find($id)->web_name;
+            $username = Auth::user()->name;
+            $HOME_PATH = $_ENV["HOME_PATH"];
 
-        File::deleteDirectory("".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."");
-        File::delete("".$HOME_PATH."/webspl/storage/app/".$username."/".$web_name.".zip");
+            $destroyer = new Process(['python3.9', app_path('Runner/destroyer.py'), $web_name]);
+            $destroyer->run();
 
-        $configuration = Configuration::find($id)->delete();
+            if(!$destroyer->isSuccessful()) {
+
+                return redirect()->route('configurations.index')->with('error', 'Your configuration could not be deleted, try again later.');
+            }
+
+            File::deleteDirectory("".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."");
+            File::delete("".$HOME_PATH."/webspl/storage/app/".$username."/".$web_name.".zip");
+
+            $configuration = Configuration::find($id)->delete();
+
+        } catch(Exception $e) {
+
+            return redirect()->route('configurations.index')->with('error', 'Your configuration could not be deleted, try again later.');
+        }
 
         return redirect()->route('configurations.index')
             ->with('success', 'Configuration deleted successfully');

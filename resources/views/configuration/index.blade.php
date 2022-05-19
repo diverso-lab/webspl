@@ -109,20 +109,25 @@ body, html {
                                             
                                             @if ( $configuration->status == 'LOADING')
                                             <td><i class="fa fa-spinner" aria-hidden="true"></i></td>
-                                            @else
+                                            @elseif ( $configuration->status == 'READY')
                                             <td><i class="fa fa-check-circle" aria-hidden="true"></i></td>
+                                            @elseif ( $configuration->status == 'PAUSED')
+                                            <td><i class="fa fa-pause" aria-hidden="true"></i></td>
                                             @endif
 
                                             <td>
-                                                <form action="{{ route('configurations.destroy',$configuration->id) }}" method="POST">
+                                                
                                                     <a class="btn btn-sm btn-primary " href="http://localhost:{{$configuration->assigned_port}}" target="_blank"><i class="fa fa-fw fa-eye"></i> WordPress</a>
                                                     <a class="btn btn-sm btn-primary " href="http://localhost:{{$configuration->assigned_port+1}}" target="_blank"><i class="fa fa-fw fa-eye"></i> phpMyAdmin</a>
-
                                                     <a class="btn btn-sm btn-success" href="download/{{ $configuration->web_name }}.zip"><i class="fa fa-fw fa-edit"></i> Download</a>
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>
-                                                </form>
+
+                                                    @if ( $configuration->status == 'READY')
+                                                    <a class="btn btn-sm btn-warning" href="{{ route('configurations.stop', $configuration->id) }}"><i class="fa fa-fw fa-pause"></i> Stop</a>
+                                                    @elseif ( $configuration->status == 'PAUSED')
+                                                    <a class="btn btn-sm btn-warning" href="{{ url('configurations.start', $configuration->id) }}"><i class="fa fa-fw fa-play"></i> Start</a>
+                                                    @endif
+
+                                                    <a class="btn btn-sm btn-danger" href="{{ route('configurations.destroy', $configuration->id) }}"><i class="fa fa-fw fa-trash"></i> Delete</a>                                                
                                             </td>
                                         </tr>
                                     @endforeach

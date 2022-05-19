@@ -17,31 +17,31 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->enum('status', ['LOADING', 'DONE'])->default('LOADING');
+            $table->enum('status', ['LOADING', 'READY', 'PAUSED'])->default('LOADING');
             
             # Settings
             $table->string('web_name')->unique();
-            $table->string('admin_email');
-            $table->string('theme');
+            $table->string('admin_email')->default('test@admin.com');
+            $table->string('theme')->default('go');
             
             # Server
-            $table->string('php');
-            $table->enum('storage', ['LOW', 'ENOUGH']);
+            $table->string('php')->default('7.4');
+            $table->enum('storage', ['LOW', 'ENOUGH'])->default('LOW');
 
             # Web
             $table->boolean('catalog')->default('1');
             $table->boolean('cart')->default('1');
-            $table->enum('search', ['BASIC', 'ADVANCED']);
-            $table->boolean('paypal_payment');
-            $table->boolean('creditcard_payment');
-            $table->boolean('mobile_payment');
-            $table->enum('security', ['HIGH', 'STANDARD']);
-            $table->boolean('backup');
-            $table->boolean('seo');
-            $table->boolean('twitter_socials');
-            $table->boolean('facebook_socials');
-            $table->boolean('youtube_socials');
-            $table->string('assigned_port');
+            $table->enum('search', ['BASIC', 'ADVANCED'])->default('BASIC');
+            $table->boolean('paypal_payment')->default('1');
+            $table->boolean('creditcard_payment')->default('0');
+            $table->boolean('mobile_payment')->default('0');
+            $table->enum('security', ['HIGH', 'STANDARD'])->default('STANDARD');
+            $table->boolean('backup')->default('0');
+            $table->boolean('seo')->default('0');
+            $table->boolean('twitter_socials')->default('0');
+            $table->boolean('facebook_socials')->default('0');
+            $table->boolean('youtube_socials')->default('0');
+            $table->string('assigned_port')->default('64999');
 
             $table->timestamps();
         });
