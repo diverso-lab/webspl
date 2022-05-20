@@ -97,6 +97,7 @@ body, html {
 										<th>Theme</th>
                                         <th>PHP</th>
                                         <th>Status</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -119,15 +120,15 @@ body, html {
                                                 
                                                     <a class="btn btn-sm btn-primary " href="http://localhost:{{$configuration->assigned_port}}" target="_blank"><i class="fa fa-fw fa-eye"></i> WordPress</a>
                                                     <a class="btn btn-sm btn-primary " href="http://localhost:{{$configuration->assigned_port+1}}" target="_blank"><i class="fa fa-fw fa-eye"></i> phpMyAdmin</a>
-                                                    <a class="btn btn-sm btn-success" href="download/{{ $configuration->web_name }}.zip"><i class="fa fa-fw fa-edit"></i> Download</a>
 
                                                     @if ( $configuration->status == 'READY')
-                                                    <a class="btn btn-sm btn-warning" href="{{ route('configurations.stop', $configuration->id) }}"><i class="fa fa-fw fa-pause"></i> Stop</a>
+                                                    <a class="btn btn-sm btn-success" href="download/{{ $configuration->web_name }}.zip"><i class="fa fa-fw fa-edit"></i> Download</a>
+                                                    <a class="btn btn-sm btn-warning" href="{{ route('configurations.stop', $configuration->id) }}"><i class="fa fa-fw fa-pause"></i> Stop</a>                                                    
                                                     @elseif ( $configuration->status == 'PAUSED')
-                                                    <a class="btn btn-sm btn-warning" href="{{ url('configurations.start', $configuration->id) }}"><i class="fa fa-fw fa-play"></i> Start</a>
-                                                    @endif
-
-                                                    <a class="btn btn-sm btn-danger" href="{{ route('configurations.destroy', $configuration->id) }}"><i class="fa fa-fw fa-trash"></i> Delete</a>                                                
+                                                    <a class="btn btn-sm btn-success" href="download/{{ $configuration->web_name }}.zip"><i class="fa fa-fw fa-edit"></i> Download</a>
+                                                    <a class="btn btn-sm btn-warning" href="{{ route('configurations.start', $configuration->id) }}"><i class="fa fa-fw fa-play"></i> Start</a>
+                                                    @endif  
+                                                    <a class="btn btn-sm btn-danger" href="{{ route('configurations.destroy', $configuration->id) }}"><i class="fa fa-fw fa-trash"></i> Delete</a>                                             
                                             </td>
                                         </tr>
                                     @endforeach

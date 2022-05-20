@@ -73,7 +73,7 @@ with open(os.getenv('HOME_PATH') + '/webspl/app/Runner/websites/' + web_name + '
 os.system('sudo cp ' + HOME_PATH + '/webspl/app/Runner/websites/' + web_name + '/features.csv valid_configuration.csv')
 
 dm = DiscoverMetamodels()
-flama = dm.use_operation_from_file("ValidConfiguration", HOME_PATH + "/webspl/app/Runner/models/webspl.uvl")
+flama = dm.use_operation_from_file("ValidConfiguration", HOME_PATH + "/webspl/app/Runner/models/ecommerce.uvl")
 
 if (flama == True):
     result = '1'

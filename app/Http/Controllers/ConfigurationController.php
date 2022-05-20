@@ -10,6 +10,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Illuminate\Support\Facades\Storage;
 use File;
+use App\Jobs\ProcessConfiguration;
 use Redirect;
 use Illuminate\Support\Str;
 
@@ -142,17 +143,8 @@ class ConfigurationController extends Controller
 
                 $line = fgets(fopen( "".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."/result.txt", 'r'));
                 if ($line == '1') {
-    
-                    $process = new Process(['python3', app_path('Runner/builder.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment,$mobile_payment, $cart, $security, $backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials, $username, $assigned_port, $password]);
-                    $process->setTimeout(450);
-                    $process->setIdleTimeout(450);
-                    $process->run();
 
-                    $configuration->status = 'READY';
-                    $configuration->save();
-    
-                    $sender = new Process(['python3.9', app_path('Runner/sender.py'), $admin_email, $username, $password]);
-                    $sender->run();
+                    ProcessConfiguration::dispatch($configuration, $username, $password);
                 
                 } else {
         
