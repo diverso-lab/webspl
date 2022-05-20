@@ -1,8 +1,4 @@
 @extends('layouts.app')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-@section('template_title')
-    Configuration
-@endsection
 
 <!DOCTYPE html>
 <html>
@@ -10,6 +6,8 @@
 <title>WebSPL</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -33,34 +31,34 @@ body, html {
 .w3-bar .w3-button {
   padding: 16px;
 }
+
 </style>
 </head>
 <body>
 
-<!-- Navbar (sit on top) -->
 <div class="w3-top">
   <div class="w3-bar w3-white w3-card" id="myNavbar">
     <a href="/#home" class="w3-bar-item w3-button w3-wide">WebSPL</a>
-    <!-- Right-sided navbar links -->
     <div class="w3-right w3-hide-small">
       <a href="/#about" class="w3-bar-item w3-button"><i class="fa fa-info-circle"></i> About</a>
       <a href="/configurations" class="w3-bar-item w3-button"><i class="fa fa-cog"></i> Configurator</a>
-    </div>
-    <!-- Hide right-floated links on small screens and replace them with a menu icon -->
 
-    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
-      <i class="fa fa-bars"></i>
-    </a>
+              <a class="w3-bar-item w3-button" href="{{ route('logout') }}"
+                 onclick="event.preventDefault();
+                               document.getElementById('logout-form').submit();">
+                  <i class="fa fa-sign-out"></i> {{ __('Logout') }}
+              </a>
+
+              <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                  @csrf
+              </form>
+    </div>
   </div>
 </div>
 
-<!-- Sidebar on small screens when clicking the menu icon -->
-<nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none" id="mySidebar">
-  <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
-  <a href="/#about" onclick="w3_close()" class="w3-bar-item w3-button">About</a>
-  <a href="/configurations" onclick="w3_close()" class="w3-bar-item w3-button">Configurator</a>
-</nav>
-
+@section('template_title')
+    Configuration
+@endsection
 
 @section('content')
     <div class="container-fluid">
@@ -97,6 +95,7 @@ body, html {
 										<th>Theme</th>
                                         <th>PHP</th>
                                         <th>Status</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -109,20 +108,25 @@ body, html {
                                             
                                             @if ( $configuration->status == 'LOADING')
                                             <td><i class="fa fa-spinner" aria-hidden="true"></i></td>
-                                            @else
+                                            @elseif ( $configuration->status == 'READY')
                                             <td><i class="fa fa-check-circle" aria-hidden="true"></i></td>
+                                            @elseif ( $configuration->status == 'PAUSED')
+                                            <td><i class="fa fa-pause" aria-hidden="true"></i></td>
                                             @endif
 
                                             <td>
-                                                <form action="{{ route('configurations.destroy',$configuration->id) }}" method="POST">
+                                                
                                                     <a class="btn btn-sm btn-primary " href="http://localhost:{{$configuration->assigned_port}}" target="_blank"><i class="fa fa-fw fa-eye"></i> WordPress</a>
                                                     <a class="btn btn-sm btn-primary " href="http://localhost:{{$configuration->assigned_port+1}}" target="_blank"><i class="fa fa-fw fa-eye"></i> phpMyAdmin</a>
 
+                                                    @if ( $configuration->status == 'READY')
                                                     <a class="btn btn-sm btn-success" href="download/{{ $configuration->web_name }}.zip"><i class="fa fa-fw fa-edit"></i> Download</a>
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>
-                                                </form>
+                                                    <a class="btn btn-sm btn-warning" href="{{ route('configurations.stop', $configuration->id) }}"><i class="fa fa-fw fa-pause"></i> Stop</a>                                                    
+                                                    @elseif ( $configuration->status == 'PAUSED')
+                                                    <a class="btn btn-sm btn-success" href="download/{{ $configuration->web_name }}.zip"><i class="fa fa-fw fa-edit"></i> Download</a>
+                                                    <a class="btn btn-sm btn-warning" href="{{ route('configurations.start', $configuration->id) }}"><i class="fa fa-fw fa-play"></i> Start</a>
+                                                    @endif  
+                                                    <a class="btn btn-sm btn-danger" href="{{ route('configurations.destroy', $configuration->id) }}"><i class="fa fa-fw fa-trash"></i> Delete</a>                                             
                                             </td>
                                         </tr>
                                     @endforeach

@@ -13,14 +13,17 @@ MAIL_PASS = os.getenv('PASSWORD')
 SENDER = os.getenv('SENDER')
 
 RECEIVER = str(sys.argv[1])
-USERNAME = str(sys.argv[2])
-PASSWORD = str(sys.argv[3])
+WEB_NAME = str(sys.argv[2])
+USERNAME = str(sys.argv[3])
+PASSWORD = str(sys.argv[4])
 
 MESSAGE = f"""From: {SENDER}
 To: {RECEIVER}
 Subject: Your configuration is now ready
 
 Your credentials are:
+
+WEB: {WEB_NAME}
 
 USER: {USERNAME}
 
