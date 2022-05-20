@@ -1,22 +1,31 @@
 
-<div class="box box-info padding-1">
+<div class="col-sm box box-info padding-1">
     <div class="box-body">
           
+        <div class="col-sm box box-info padding-1 float-right">
+            <img class="sticky" src="{{ asset('/images/e-Commerce.png') }}" alt="e-Commerce">
+        </div>
+
+
         <h4>Website Details</h4>
         <p class="text-danger">{!! session()->get('flama', '<div class="invalid-feedback text-danger"><p class="text-danger">:message</p></div>') !!}</p>
         <div class="form-group">
-            <p2 class="fw-bold">{{ Form::label('web_name') }}</p2>
+            {{ Form::label('web_name') }}
             <br><p>This field will be used for naming your website. We do recommend a full lower case name with no spaces</p>
-            <p>{{ Form::text('web_name', $configuration->web_name, ['class' => 'form-control' . ($errors->has('web_name') ? ' is-invalid' : ''), 'placeholder' => 'Web Name']) }}</p>
+            {{ Form::text('web_name', $configuration->web_name, ['class' => 'form-control' . ($errors->has('web_name') ? ' is-invalid' : ''), 'placeholder' => 'Web Name']) }}
             {!! $errors->first('web_name', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         <br>
+
+
+
         <div class="form-group">
-            <p2 class="fw-bold">{{ Form::label('admin_email') }}</p2>
+            {{ Form::label('admin_email') }}
             <br><p> We will register your email to send you the password for your website, please enter a valid email</p>
-            <p class="test">{{ Form::text('admin_email', $configuration->admin_email, ['class' => 'form-control test' . ($errors->has('admin_email') ? ' is-invalid' : ''), 'placeholder' => 'Email']) }}</p></fieldset> 
+            {{ Form::text('admin_email', $configuration->admin_email, ['class' => 'form-control test' . ($errors->has('admin_email') ? ' is-invalid' : ''), 'placeholder' => 'Email']) }}
             {!! $errors->first('admin_email', '<div class="invalid-feedback">:message</div>') !!}
         </div>
+
         <br>
         <div class="form-group">
             <p2 class="fw-bold">{{ Form::label('theme') }}</p2>
@@ -119,6 +128,8 @@
             {!! $errors->first('youtube_socials', '<div class="invalid-feedback">:message</div>') !!}
         </div>
 
+        
+
         <div class="mt-3">
             <br>
             <br>
@@ -128,6 +139,6 @@
 
     </div>
 
-   
-
+    
+</div>
 </div>

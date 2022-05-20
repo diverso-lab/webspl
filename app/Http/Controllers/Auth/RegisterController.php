@@ -73,7 +73,7 @@ class RegisterController extends Controller
         $email = $data['email'];
         $username = $data['name'];
 
-        $welcomer = new Process(['python3.9', '/home/joszamama/diverso-lab/webspl/app/Runner/welcomer.py', $email, $username]);
+        $welcomer = new Process(['python3.9', ''.$HOME_PATH.'/webspl/app/Runner/welcomer.py', $email, $username]);
         $welcomer->run();
 
         return User::create([

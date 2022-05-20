@@ -1,9 +1,3 @@
-@extends('layouts.app')
-
-@section('template_title')
-    Create Configuration
-@endsection
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,6 +41,13 @@ body, html {
   line-height: 1.8;
 }
 
+img.sticky {
+  position: fixed;
+  left: 30%;
+  width: 60%;
+  margin:25px 100px;
+}
+
 /* Full height image header */
 .bgimg-1 {
   background-position: center;
@@ -87,7 +88,14 @@ body, html {
   <a href="/configurations" onclick="w3_close()" class="w3-bar-item w3-button">Configurator</a>
 </nav>
 
+@extends('layouts.app')
+
+@section('template_title')
+    Create Configuration
+@endsection
+
 @section('content')
+
     <section class="content container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -99,7 +107,7 @@ body, html {
                         <span class="card-title">Create Configuration</span>
                     </div>
                     <div class="d-flex justify-content-between card-body">
-                        <form method="POST" action="{{ route('configurations.store') }}"  role="form">
+                        <form method="POST" action="{{ route('configurations.store') }}"  role="form" enctype="multipart/form-data">
                             @csrf
 
                             @include('configuration.form')
@@ -107,6 +115,7 @@ body, html {
                         </form>
                     </div>
                 </div>
+                
             </div>
         </div>
     </section>
