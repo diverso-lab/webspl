@@ -20,7 +20,6 @@ class CheckConfiguration
     {
 
         $configuration_id = $request->route('configuration');
-
         $configuration = Configuration::findOrFail($configuration_id);
 
         if ($configuration->user->id != Auth::user()->id) {
