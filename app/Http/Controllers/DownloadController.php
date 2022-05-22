@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\Request;
 
 class DownloadController extends Controller
 {
@@ -12,15 +11,13 @@ class DownloadController extends Controller
     {
         try {
             $username = Auth::user()->name;
-        
-            $response = Storage::download("".$username."/".$zip."");
+
+            $response = Storage::download("" . $username . "/" . $zip . "");
             ob_end_clean();
 
             return $response;
-
-        } catch(\Throwable $e) {
+        } catch (\Throwable$e) {
             abort(404);
         }
-        
     }
 }

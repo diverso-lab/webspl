@@ -33,10 +33,13 @@ with open(os.getenv('HOME_PATH') + '/webspl/app/Runner/websites/' + web_name + '
     writer.writerow(['Shopping', 'True'])
     writer.writerow(['Security', 'True'])
     writer.writerow(['Cart', 'True'])
-    writer.writerow(['Payment', 'True'])
+
     writer.writerow(['PHP', 'True'])
     writer.writerow(['Storage', 'True'])
     writer.writerow(['v74', 'True'])
+
+    if (paypal_payment == '1') or (creditcard_payment == '1') or (mobile_payment == '1'):
+        writer.writerow(['Payment', 'True'])
 
     if storage == 'LOW':
         writer.writerow(['LOW', 'True'])
