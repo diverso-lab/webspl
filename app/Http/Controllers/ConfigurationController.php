@@ -22,7 +22,7 @@ class ConfigurationController extends Controller
 
     public function __construct()
     {
-        $this->middleware('checkconfiguration', ['except' => ['index', 'create', 'store', 'stop', 'start', 'destroy']]);
+        $this->middleware('checkconfiguration', ['except' => ['index', 'create', 'store']]);
     }
 
     /**

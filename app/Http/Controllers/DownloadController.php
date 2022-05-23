@@ -16,7 +16,7 @@ class DownloadController extends Controller
             ob_end_clean();
 
             return $response;
-        } catch (\Throwable$e) {
+        } catch (\Throwable $e) {
             abort(404);
         }
     }

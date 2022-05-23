@@ -19,8 +19,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::resource('configurations', App\Http\Controllers\ConfigurationController::class)->middleware('auth');
-Route::get('configurations/stop/{id}',  [App\Http\Controllers\ConfigurationController::class, 'stop'])->name('configurations.stop');
-Route::get('configurations/destroy/{id}',  [App\Http\Controllers\ConfigurationController::class, 'destroy'])->name('configurations.destroy');
-Route::get('configurations/start/{id}',  [App\Http\Controllers\ConfigurationController::class, 'start'])->name('configurations.start');
-Route::get('/download/{zip}', [App\Http\Controllers\DownloadController::class, 'download'])->name('download');
+Route::middleware('auth')->group(function () {
+    Route::resource('configurations', App\Http\Controllers\ConfigurationController::class);
+    Route::get('configurations/stop/{id}',  [App\Http\Controllers\ConfigurationController::class, 'stop'])->name('configurations.stop');
+    Route::get('configurations/destroy/{id}',  [App\Http\Controllers\ConfigurationController::class, 'destroy'])->name('configurations.destroy');
+    Route::get('configurations/start/{id}',  [App\Http\Controllers\ConfigurationController::class, 'start'])->name('configurations.start');
+    Route::get('/download/{zip}', [App\Http\Controllers\DownloadController::class, 'download'])->name('download');
+});
+
+

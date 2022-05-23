@@ -19,7 +19,7 @@ class CheckConfiguration
     public function handle(Request $request, Closure $next)
     {
 
-        $configuration_id = $request->route('configuration');
+        $configuration_id = $request->route('id');
         $configuration = Configuration::findOrFail($configuration_id);
 
         if ($configuration->user->id != Auth::user()->id) {
