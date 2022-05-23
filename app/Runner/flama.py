@@ -25,58 +25,56 @@ youtube_socials = sys.argv[17]
 
 with open(os.getenv('HOME_PATH') + '/webspl/app/Runner/websites/' + web_name + '/features.csv', 'w', encoding='UTF8') as f:
     writer = csv.writer(f)
-    writer.writerow(['eCommerce', 'True'])
-    writer.writerow(['Server', 'True'])
-    writer.writerow(['Web', 'True'])
-    writer.writerow(['Catalog', 'True'])
-    writer.writerow(['Search', 'True'])
-    writer.writerow(['Shopping', 'True'])
-    writer.writerow(['Security', 'True'])
-    writer.writerow(['Cart', 'True'])
-
-    writer.writerow(['PHP', 'True'])
-    writer.writerow(['Storage', 'True'])
-    writer.writerow(['v74', 'True'])
-
-    if (paypal_payment == '1') or (creditcard_payment == '1') or (mobile_payment == '1'):
-        writer.writerow(['Payment', 'True'])
-
+    writer.writerow(['eCommerce'])
+    writer.writerow(['Server'])
+    writer.writerow(['PHP'])
+    writer.writerow(['v74'])
+    writer.writerow(['Storage'])
     if storage == 'LOW':
-        writer.writerow(['LOW', 'True'])
+        writer.writerow(['LOW'])
     else:
-        writer.writerow(['ENOUGH', 'True'])
-
-    if security == 'HIGH':
-        writer.writerow(['HIGH', 'True'])
-    else:
-        writer.writerow(['STANDARD', 'True'])
-
+        writer.writerow(['ENOUGH'])
+    writer.writerow(['Web'])
+    writer.writerow(['Catalog'])
+    writer.writerow(['Search'])
     if search == 'BASIC':
-        writer.writerow(['BASIC', 'True'])
+        writer.writerow(['BASIC'])
     else:
-        writer.writerow(['ADVANCED', 'True'])
-
-    if backup == '1':
-        writer.writerow(['Backup', 'True'])
-    if seo == '1':
-        writer.writerow(['SEO', 'True'])
+        writer.writerow(['ADVANCED'])
+    writer.writerow(['Shopping'])
+    writer.writerow(['Cart'])
+    if (paypal_payment == '1') or (creditcard_payment == '1') or (mobile_payment == '1'):
+        writer.writerow(['Payment'])
     if paypal_payment == '1':
-        writer.writerow(['PayPal', 'True'])
+        writer.writerow(['PayPal'])
     if creditcard_payment == '1':
-        writer.writerow(['CreditCard', 'True'])
+        writer.writerow(['CreditCard'])
     if mobile_payment == '1':
-        writer.writerow(['Mobile', 'True'])
+        writer.writerow(['Mobile'])
+    writer.writerow(['Security'])
+    if security == 'HIGH':
+        writer.writerow(['HIGH'])
+    else:
+        writer.writerow(['STANDARD'])
+    if backup == '1':
+        writer.writerow(['Backup'])
+    if (seo == '1') or twitter_socials == '1' or facebook_socials == '1' or twitter_socials == '1':
+        writer.writerow(['Marketing'])
+    if seo == '1':
+        writer.writerow(['SEO'])
+    if twitter_socials == '1' or facebook_socials == '1' or twitter_socials == '1':
+        writer.writerow(['Socials'])
     if twitter_socials == '1':
-        writer.writerow(['Twitter', 'True'])
+        writer.writerow(['Twitter'])
     if facebook_socials == '1':
-        writer.writerow(['Facebook', 'True'])
+        writer.writerow(['Facebook'])
     if youtube_socials == '1':
-        writer.writerow(['YouTube', 'True'])
+        writer.writerow(['YouTube'])
 
-os.system('sudo cp ' + HOME_PATH + '/webspl/app/Runner/websites/' + web_name + '/features.csv valid_configuration.csv')
+os.system('sudo cp ' + HOME_PATH + '/webspl/app/Runner/websites/' + web_name + '/features.csv valid_product.csv')
 
 dm = DiscoverMetamodels()
-flama = dm.use_operation_from_file("ValidConfiguration", HOME_PATH + "/webspl/app/Runner/models/ecommerce.uvl")
+flama = dm.use_operation_from_file("ValidProduct", HOME_PATH + "/webspl/app/Runner/models/ecommerce.uvl")
 
 if (flama == True):
     result = '1'
