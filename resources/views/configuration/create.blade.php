@@ -150,6 +150,7 @@ img.sticky {
           <br> <p>Specify the storage your hosting has. (Low < 500 MB)</p>
           {!! Form::select('storage', ['ENOUGH' => 'Enough','LOW' => 'Low'], 'LOW') !!}
           {!! $errors->first('storage', '<div class="invalid-feedback">:message</div>') !!}
+          <p class="text-danger">{!! session()->get('storage', '<div class="invalid-feedback text-danger"><p class="text-danger">:message</p></div>') !!}</p>
       </div>
       <br>
       <div class="form-group">
@@ -186,12 +187,14 @@ img.sticky {
       <br>    
       <br>
       <h4>Payments</h4>
+      <p class="text-danger">{!! session()->get('payments', '<div class="invalid-feedback text-danger"><p class="text-danger">:message</p></div>') !!}</p>
       </div>
           <div class="form-group">
           <p2 class="fw-bold">{{ Form::label('paypal_payment') }}</p2>
           <br> <p>Include PayPal support for Payments</p>
           {!! Form::select('paypal_payment', ['0' => 'No','1' => 'Yes'], '1') !!}
           {!! $errors->first('paypal_payment', '<div class="invalid-feedback">:message</div>') !!}
+          <p class="text-danger">{!! session()->get('paypal', '<div class="invalid-feedback text-danger"><p class="text-danger">:message</p></div>') !!}</p>
       </div>
       <br>
       <div class="form-group">
@@ -199,6 +202,7 @@ img.sticky {
           <br> <p>Include CreditCard support for Payments</p>
           {!! Form::select('creditcard_payment', ['0' => 'No','1' => 'Yes'], '0') !!}
           {!! $errors->first('creditcard_payment', '<div class="invalid-feedback">:message</div>') !!}
+          <p class="text-danger">{!! session()->get('creditcard', '<div class="invalid-feedback text-danger"><p class="text-danger">:message</p></div>') !!}</p>
       </div>
       <br>
       <div class="form-group">
@@ -206,6 +210,7 @@ img.sticky {
           <br> <p>Include Mobile Payments</p>
           {!! Form::select('mobile_payment', ['0' => 'No','1' => 'Yes'], '0') !!}
           {!! $errors->first('mobile_payment', '<div class="invalid-feedback">:message</div>') !!}
+          <p class="text-danger">{!! session()->get('mobile', '<div class="invalid-feedback text-danger"><p class="text-danger">:message</p></div>') !!}</p>
       </div>
       <br>
       <br>

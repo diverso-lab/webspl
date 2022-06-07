@@ -6,6 +6,7 @@ __pycache__/
 # C extensions
 *.so
 valid_configuration.csv
+valid_product.csv
 
 # Evidentia .gitignore
 .idea/
