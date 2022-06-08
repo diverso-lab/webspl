@@ -235,65 +235,65 @@ writing_file = open(ENV + "/generated-websites/" +
 writing_file.write(new_file_content)
 writing_file.close()
 
-# WP USER
-reading_file = open(ENV + "/generated-websites/" +
-                    web_name + "/auto-wp/.env", "r")
-new_file_content = ""
-for line in reading_file:
-    stripped_line = line.strip()
-    new_line = stripped_line.replace(
-        'WORDPRESS_ADMIN_USER="wordpress"', 'WORDPRESS_ADMIN_USER=' + username)
-    new_file_content += new_line + "\n"
-reading_file.close()
-writing_file = open(ENV + "/generated-websites/" +
-                    web_name + "/auto-wp/.env", "w")
-writing_file.write(new_file_content)
-writing_file.close()
+# # WP USER
+# reading_file = open(ENV + "/generated-websites/" +
+#                     web_name + "/auto-wp/.env", "r")
+# new_file_content = ""
+# for line in reading_file:
+#     stripped_line = line.strip()
+#     new_line = stripped_line.replace(
+#         'WORDPRESS_ADMIN_USER="wordpress"', 'WORDPRESS_ADMIN_USER=' + username)
+#     new_file_content += new_line + "\n"
+# reading_file.close()
+# writing_file = open(ENV + "/generated-websites/" +
+#                     web_name + "/auto-wp/.env", "w")
+# writing_file.write(new_file_content)
+# writing_file.close()
 
-# WP PASS
-reading_file = open(ENV + "/generated-websites/" +
-                    web_name + "/auto-wp/.env", "r")
-new_file_content = ""
-for line in reading_file:
-    stripped_line = line.strip()
-    new_line = stripped_line.replace(
-        'WORDPRESS_ADMIN_PASSWORD="wordpress"', 'WORDPRESS_ADMIN_PASSWORD=' + PASS)
-    new_file_content += new_line + "\n"
-reading_file.close()
-writing_file = open(ENV + "/generated-websites/" +
-                    web_name + "/auto-wp/.env", "w")
-writing_file.write(new_file_content)
-writing_file.close()
+# # WP PASS
+# reading_file = open(ENV + "/generated-websites/" +
+#                     web_name + "/auto-wp/.env", "r")
+# new_file_content = ""
+# for line in reading_file:
+#     stripped_line = line.strip()
+#     new_line = stripped_line.replace(
+#         'WORDPRESS_ADMIN_PASSWORD="wordpress"', 'WORDPRESS_ADMIN_PASSWORD=' + PASS)
+#     new_file_content += new_line + "\n"
+# reading_file.close()
+# writing_file = open(ENV + "/generated-websites/" +
+#                     web_name + "/auto-wp/.env", "w")
+# writing_file.write(new_file_content)
+# writing_file.close()
 
-# PHPMA USER
-reading_file = open(ENV + "/generated-websites/" +
-                    web_name + "/auto-wp/.env", "r")
-new_file_content = ""
-for line in reading_file:
-    stripped_line = line.strip()
-    new_line = stripped_line.replace(
-        'DATABASE_USER=root', 'DATABASE_USER=' + username)
-    new_file_content += new_line + "\n"
-reading_file.close()
-writing_file = open(ENV + "/generated-websites/" +
-                    web_name + "/auto-wp/.env", "w")
-writing_file.write(new_file_content)
-writing_file.close()
+# # PHPMA USER
+# reading_file = open(ENV + "/generated-websites/" +
+#                     web_name + "/auto-wp/.env", "r")
+# new_file_content = ""
+# for line in reading_file:
+#     stripped_line = line.strip()
+#     new_line = stripped_line.replace(
+#         'DATABASE_USER=root', 'DATABASE_USER=' + username)
+#     new_file_content += new_line + "\n"
+# reading_file.close()
+# writing_file = open(ENV + "/generated-websites/" +
+#                     web_name + "/auto-wp/.env", "w")
+# writing_file.write(new_file_content)
+# writing_file.close()
 
-# PHPMA PASS
-reading_file = open(ENV + "/generated-websites/" +
-                    web_name + "/auto-wp/.env", "r")
-new_file_content = ""
-for line in reading_file:
-    stripped_line = line.strip()
-    new_line = stripped_line.replace(
-        'DATABASE_PASSWORD=password', 'DATABASE_PASSWORD=' + PASS)
-    new_file_content += new_line + "\n"
-reading_file.close()
-writing_file = open(ENV + "/generated-websites/" +
-                    web_name + "/auto-wp/.env", "w")
-writing_file.write(new_file_content)
-writing_file.close()
+# # PHPMA PASS
+# reading_file = open(ENV + "/generated-websites/" +
+#                     web_name + "/auto-wp/.env", "r")
+# new_file_content = ""
+# for line in reading_file:
+#     stripped_line = line.strip()
+#     new_line = stripped_line.replace(
+#         'DATABASE_PASSWORD=password', 'DATABASE_PASSWORD=' + PASS)
+#     new_file_content += new_line + "\n"
+# reading_file.close()
+# writing_file = open(ENV + "/generated-websites/" +
+#                     web_name + "/auto-wp/.env", "w")
+# writing_file.write(new_file_content)
+# writing_file.close()
 
 os.system("cd " + ENV + "/generated-websites/" +
           web_name + "/auto-wp && sudo make autoinstall")
