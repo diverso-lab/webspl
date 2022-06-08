@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
+use App\Jobs\ProcessConfiguration;
 use App\Models\Configuration;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Symfony\Component\Process\Process;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Illuminate\Support\Facades\Storage;
+use Auth;
 use File;
-use App\Jobs\ProcessConfiguration;
-use Redirect;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
+use Redirect;
+use Symfony\Component\Process\Process;
 
 /**
  * Class ConfigurationController
@@ -24,7 +22,7 @@ class ConfigurationController extends Controller
 
     public function __construct()
     {
-        $this->middleware('checkconfiguration', ['except' => ['index', 'create', 'store', 'stop', 'start', 'destroy']]);
+        $this->middleware('checkconfiguration', ['except' => ['index', 'create', 'store']]);
     }
 
     /**
@@ -36,13 +34,12 @@ class ConfigurationController extends Controller
     {
 
         $user = Auth::user();
-        $configurations =  $user->configurations();
+        $configurations = $user->configurations();
 
         return view('configuration.index', [
             'configurations' => $configurations->paginate(10),
         ]);
-
-       }
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -69,14 +66,54 @@ class ConfigurationController extends Controller
         $username = Auth::user()->name;
         $HOME_PATH = $_ENV["HOME_PATH"];
 
+        $web_name = request('web_name');
+        $admin_email = request('admin_email');
+        $theme = request('theme');
+        $php = request('php');
+        $storage = request('storage');
+        $catalog = '1';
+        $cart = '1';
+        $search = request('search');
+        $seo = request('seo');
+        $paypal_payment = request('paypal_payment');
+        $creditcard_payment = request('creditcard_payment');
+        $mobile_payment = request('mobile_payment');
+        $security = request('security');
+        $backup = request('backup');
+        $twitter_socials = request('twitter_socials');
+        $facebook_socials = request('facebook_socials');
+        $youtube_socials = request('youtube_socials');
+
+        if ($backup == '1' && $storage == 'LOW') {
+            return redirect('configurations/create')->with('storage', 'You cannot select backups if you have low storage')->withInput();
+        }
+
+        if ($paypal_payment == '0' && $creditcard_payment == '0' && $mobile_payment == '0') {
+            return redirect('configurations/create')->with('payments', 'You must select at least one payment method.')->withInput();
+        }
+
+        if ($creditcard_payment == '1' && $security == 'STANDARD') {
+            return redirect('configurations/create')->with('creditcard', 'You cannot select Credit Card Payments if you have not advanced security')->withInput();
+        }
+
+        if ($mobile_payment == '1' && $security == 'STANDARD') {
+            return redirect('configurations/create')->with('mobile', 'You cannot select Mobile Payments if you have not advanced security')->withInput();
+        }
+
+
+
         # Port detector
         try {
 
             $port_detector = new Process(['python3.9', app_path('Runner/detector.py')]);
             $port_detector->run();
-            $assigned_port = $port_detector->getOutput();
 
-        } catch(Exception $e) {
+            if (!$port_detector->isSuccessful()) {
+                return redirect('configurations/create')->with('flama', 'We could not find a free port for your configuration, please try again later.')->withInput();
+            }
+
+            $assigned_port = $port_detector->getOutput();
+        } catch (Exception $e) {
 
             return redirect('configurations/create')->with('flama', 'No ports are available, try again later.')->withInput();
         }
@@ -103,74 +140,55 @@ class ConfigurationController extends Controller
                 'facebook_socials' => request('facebook_socials'),
                 'youtube_socials' => request('youtube_socials'),
                 'assigned_port' => $assigned_port,
-                'user_id' => Auth::user()->id
+                'user_id' => Auth::user()->id,
             ]);
-
-        } catch(Exception $e) {
+        } catch (Exception $e) {
 
             $configuration->delete();
             return redirect('configurations/create')->with('flama', 'Could not save the configuration, try again later.')->withInput();
         }
 
-        $web_name = request('web_name');
-        $admin_email = request('admin_email');
-        $theme = request('theme');
-        $php = request('php');
-        $storage = request('storage');
-        $catalog = '1';
-        $cart = '1';
-        $search = request('search');
-        $seo = request('seo');
-        $paypal_payment = request('paypal_payment');
-        $creditcard_payment = request('creditcard_payment');
-        $mobile_payment = request('mobile_payment');
-        $security = request('security');
-        $backup = request('backup');
-        $twitter_socials = request('twitter_socials');
-        $facebook_socials = request('facebook_socials');
-        $youtube_socials = request('youtube_socials');
-
         # Flama validation
         try {
 
-            File::makeDirectory("".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."");
+            File::makeDirectory("" . $HOME_PATH . "/webspl/app/Runner/websites/" . $web_name . "");
 
-            $flama = new Process(['python3.9', app_path('Runner/flama.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment,$mobile_payment, $cart, $security, $backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials]);
+            $flama = new Process(['python3.9', app_path('Runner/flama.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment, $mobile_payment, $cart, $security, $backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials]);
             $flama->run();
+
+            if (!$flama->isSuccessful()) {
+                return redirect('configurations/create')->with('flama', 'Flama could not validate your configuration, please try again later.')->withInput();
+            }
 
             # Site builder
             try {
 
-                $line = fgets(fopen( "".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."/result.txt", 'r'));
+                $line = fgets(fopen("" . $HOME_PATH . "/webspl/app/Runner/websites/" . $web_name . "/result.txt", 'r'));
                 if ($line == '1') {
 
                     ProcessConfiguration::dispatch($configuration, $username, $password);
-                
                 } else {
-        
-                    File::deleteDirectory("".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."");
-                    $configuration->delete();
-                    return redirect('configurations/create')->with('flama', 'The generated configuration is not valid. Please, check the following constraints:')->withInput();           
-                }
 
-            } catch(Exception $e) {
-            
-                File::deleteDirectory("".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."");
-                File::delete("".$HOME_PATH."/webspl/storage/".$username."/".$web_name.".zip");
+                    File::deleteDirectory("" . $HOME_PATH . "/webspl/app/Runner/websites/" . $web_name . "");
+                    $configuration->delete();
+                    return redirect('configurations/create')->with('flama', 'The generated configuration is not valid. Please, check the following constraints:')->withInput();
+                }
+            } catch (Exception $e) {
+
+                File::deleteDirectory("" . $HOME_PATH . "/webspl/app/Runner/websites/" . $web_name . "");
+                File::delete("" . $HOME_PATH . "/webspl/storage/" . $username . "/" . $web_name . ".zip");
                 $configuration->delete();
-    
+
                 return redirect('configurations/create')->with('flama', 'The configuration could not be generated, please try again later.')->withInput();
             }
+        } catch (Exception $e) {
 
-        } catch(Exception $e) {
-
-            File::deleteDirectory("".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."");
+            File::deleteDirectory("" . $HOME_PATH . "/webspl/app/Runner/websites/" . $web_name . "");
             $configuration->delete();
             return redirect('configurations/create')->with('flama', 'The configuration could not be validated, please try again later.')->withInput();
         }
 
         return redirect()->route('configurations.index')->with('success', 'Configuration created successfully');
-        
     }
 
     /**
@@ -192,7 +210,7 @@ class ConfigurationController extends Controller
             $stopper = new Process(['python3.9', app_path('Runner/stopper.py'), $web_name]);
             $stopper->run();
 
-            if(!$stopper->isSuccessful()) {
+            if (!$stopper->isSuccessful()) {
 
                 return redirect()->route('configurations.index')->with('error', 'Your configuration could not be stopped, try again later.');
             }
@@ -200,8 +218,7 @@ class ConfigurationController extends Controller
             $configuration = Configuration::find($id);
             $configuration->status = 'PAUSED';
             $configuration->save();
-
-        } catch(Exception $e) {
+        } catch (Exception $e) {
 
             return redirect()->route('configurations.index')->with('error', 'Your configuration could not be stopped, try again later.');
         }
@@ -229,7 +246,7 @@ class ConfigurationController extends Controller
             $starter = new Process(['python3.9', app_path('Runner/starter.py'), $web_name]);
             $starter->run();
 
-            if(!$starter->isSuccessful()) {
+            if (!$starter->isSuccessful()) {
 
                 return redirect()->route('configurations.index')->with('error', 'Your configuration could not be started, please try again later.');
             }
@@ -237,8 +254,7 @@ class ConfigurationController extends Controller
             $configuration = Configuration::find($id);
             $configuration->status = 'READY';
             $configuration->save();
-
-        } catch(Exception $e) {
+        } catch (Exception $e) {
 
             return redirect()->route('configurations.index')->with('error', 'Your configuration could not be started, please try again later.');
         }
@@ -263,17 +279,16 @@ class ConfigurationController extends Controller
             $destroyer = new Process(['python3.9', app_path('Runner/destroyer.py'), $web_name]);
             $destroyer->run();
 
-            if(!$destroyer->isSuccessful()) {
+            if (!$destroyer->isSuccessful()) {
 
                 return redirect()->route('configurations.index')->with('error', 'Your configuration could not be deleted, try again later.');
             }
 
-            File::deleteDirectory("".$HOME_PATH."/webspl/app/Runner/websites/".$web_name."");
-            File::delete("".$HOME_PATH."/webspl/storage/app/".$username."/".$web_name.".zip");
+            File::deleteDirectory("" . $HOME_PATH . "/webspl/app/Runner/websites/" . $web_name . "");
+            File::delete("" . $HOME_PATH . "/webspl/storage/app/" . $username . "/" . $web_name . ".zip");
 
             $configuration = Configuration::find($id)->delete();
-
-        } catch(Exception $e) {
+        } catch (Exception $e) {
 
             return redirect()->route('configurations.index')->with('error', 'Your configuration could not be deleted, try again later.');
         }

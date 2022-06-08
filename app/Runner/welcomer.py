@@ -12,8 +12,8 @@ PORT = os.getenv('PORT')
 MAIL_PASS = os.getenv('PASSWORD')
 SENDER = os.getenv('SENDER')
 
-RECEIVER = "joszamama@gmail.com" #str(sys.argv[1])
-USERNAME = "joszamama" #str(sys.argv[2])
+RECEIVER = str(sys.argv[1])
+USERNAME = str(sys.argv[2])
 
 MESSAGE = f"""From: {SENDER}
 To: {RECEIVER}
