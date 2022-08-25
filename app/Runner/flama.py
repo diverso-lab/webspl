@@ -2,7 +2,7 @@
 import os
 import sys
 import csv
-from famapy.core.discover import DiscoverMetamodels
+from flamapy.core.discover import DiscoverMetamodels
 from dotenv import load_dotenv
 
 load_dotenv()
