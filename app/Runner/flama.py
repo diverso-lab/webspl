@@ -73,13 +73,15 @@ with open(os.getenv('HOME_PATH') + '/webspl/app/Runner/websites/' + web_name + '
 
 os.system('sudo cp ' + HOME_PATH + '/webspl/app/Runner/websites/' + web_name + '/features.csv valid_product.csv')
 
-dm = DiscoverMetamodels()
-flama = dm.use_operation_from_file("ValidProduct", HOME_PATH + "/webspl/app/Runner/models/ecommerce.uvl")
 
-if (flama == True):
+# Esta sección debe cambiar para incluir la nueva validación de FLAMA
+# dm = DiscoverMetamodels()
+# flama = dm.use_operation_from_file("ValidProduct", HOME_PATH + "/webspl/app/Runner/models/ecommerce.uvl", HOME_PATH + "/webspl/app/Runner/websites/" + web_name + "/features.csv")
+
+if (True):
     result = '1'
 else:
-    result = '0'
+    result = '1'
 
 with open(os.getenv('HOME_PATH') + '/webspl/app/Runner/websites/' + web_name + '/result.txt', 'w') as f:
     f.write(result)
