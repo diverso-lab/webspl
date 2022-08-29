@@ -37,7 +37,6 @@ class ProcessConfiguration implements ShouldQueue
      */
     public function handle()
     {
-
         $configuration = $this->configuration;
         $username = $this->username;
         $password = $this->password;
@@ -49,8 +48,5 @@ class ProcessConfiguration implements ShouldQueue
 
         $configuration->status = 'READY';
         $configuration->save();
-
-        $prueba = new Process(['python', app_path('Runner/test.py'), $configuration->web_name, $configuration->admin_email, $configuration->theme, $configuration->php, $configuration->storage, $configuration->catalog, $configuration->search, $configuration->paypal_payment, $configuration->creditcard_payment, $configuration->mobile_payment, $configuration->cart, $configuration->security, $configuration->backup, $configuration->seo, $configuration->twitter_socials, $configuration->facebook_socials, $configuration->youtube_socials, $username, $configuration->assigned_port, $password]);
-        $prueba->run();
     }
 }
