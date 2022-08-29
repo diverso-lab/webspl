@@ -3,9 +3,6 @@ import os
 import sys
 import csv
 from flamapy.core.discover import DiscoverMetamodels
-from dotenv import load_dotenv
-
-load_dotenv()
 
 HOME_PATH = os.getenv('HOME_PATH')
 

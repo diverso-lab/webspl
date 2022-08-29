@@ -105,7 +105,7 @@ class ConfigurationController extends Controller
         # Port detector
         try {
 
-            $port_detector = new Process(['python3.9', app_path('Runner/detector.py')]);
+            $port_detector = new Process(['python', app_path('Runner/detector.py')]);
             $port_detector->run();
 
             if (!$port_detector->isSuccessful()) {
@@ -153,7 +153,7 @@ class ConfigurationController extends Controller
 
             File::makeDirectory("" . $HOME_PATH . "/webspl/app/Runner/websites/" . $web_name . "");
 
-            $flama = new Process(['python3.9', app_path('Runner/flama.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment, $mobile_payment, $cart, $security, $backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials]);
+            $flama = new Process(['python', app_path('Runner/flama.py'), $web_name, $admin_email, $theme, $php, $storage, $catalog, $search, $paypal_payment, $creditcard_payment, $mobile_payment, $cart, $security, $backup, $seo, $twitter_socials, $facebook_socials, $youtube_socials]);
             $flama->run();
 
             if (!$flama->isSuccessful()) {
@@ -207,7 +207,7 @@ class ConfigurationController extends Controller
             $username = Auth::user()->name;
             $HOME_PATH = $_ENV["HOME_PATH"];
 
-            $stopper = new Process(['python3.9', app_path('Runner/stopper.py'), $web_name]);
+            $stopper = new Process(['python', app_path('Runner/stopper.py'), $web_name]);
             $stopper->run();
 
             if (!$stopper->isSuccessful()) {
@@ -243,7 +243,7 @@ class ConfigurationController extends Controller
             $username = Auth::user()->name;
             $HOME_PATH = $_ENV["HOME_PATH"];
 
-            $starter = new Process(['python3.9', app_path('Runner/starter.py'), $web_name]);
+            $starter = new Process(['python', app_path('Runner/starter.py'), $web_name]);
             $starter->run();
 
             if (!$starter->isSuccessful()) {
@@ -276,7 +276,7 @@ class ConfigurationController extends Controller
             $username = Auth::user()->name;
             $HOME_PATH = $_ENV["HOME_PATH"];
 
-            $destroyer = new Process(['python3.9', app_path('Runner/destroyer.py'), $web_name]);
+            $destroyer = new Process(['python', app_path('Runner/destroyer.py'), $web_name]);
             $destroyer->run();
 
             if (!$destroyer->isSuccessful()) {
