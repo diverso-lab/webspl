@@ -41,7 +41,7 @@ class ProcessConfiguration implements ShouldQueue
         $username = $this->username;
         $password = $this->password;
 
-        $process = new Process(['python', app_path('Runner/builder.py'), $configuration->web_name, $configuration->admin_email, $configuration->theme, $configuration->php, $configuration->storage, $configuration->catalog, $configuration->search, $configuration->paypal_payment, $configuration->creditcard_payment, $configuration->mobile_payment, $configuration->cart, $configuration->security, $configuration->backup, $configuration->seo, $configuration->twitter_socials, $configuration->facebook_socials, $configuration->youtube_socials, $username, $configuration->assigned_port, $password]);
+        $process = new Process(['python3', app_path('Runner/builder.py'), $configuration->web_name, $configuration->admin_email, $configuration->theme, $configuration->php, $configuration->storage, $configuration->catalog, $configuration->search, $configuration->paypal_payment, $configuration->creditcard_payment, $configuration->mobile_payment, $configuration->cart, $configuration->security, $configuration->backup, $configuration->seo, $configuration->twitter_socials, $configuration->facebook_socials, $configuration->youtube_socials, $username, $configuration->assigned_port, $password]);
         $process->setTimeout(450);
         $process->setIdleTimeout(450);
         $process->run();
